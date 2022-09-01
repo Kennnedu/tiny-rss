@@ -60,7 +60,7 @@ body {
   font-weight: 800;
 }
 .post__tools {
-  display:none;
+  display: flex;
   position: absolute;
   top: calc((100% - 60px) / 2);
   right: 37%;
@@ -131,4 +131,8 @@ body {
     margin-right: 0;
     margin-left: 1rem;
   }
+}
+.page-end {
+  display:flex;
+  justify-content:center;
 }

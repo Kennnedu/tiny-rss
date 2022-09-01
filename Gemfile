@@ -10,5 +10,4 @@ gem "pg", "~> 1.4"
 gem "nokogiri", "~> 1.13"
 gem "rss", "~> 0.2.9"
 gem "sinatra", "~> 2.2"
-
 gem "puma", "~> 5.6"

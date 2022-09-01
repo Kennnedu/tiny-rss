@@ -1,23 +1,31 @@
-document.querySelectorAll('.post').forEach(post => {
-  const postContent = post.querySelector('.post__content');
-  const postTools = post.querySelector('.post__tools');
-  post.addEventListener('click', e => {
-    const starTarget = e.target.closest('[data-star-path]');
-    const viewTarget = e.target.closest('[data-view-link]');
+var templatePostTools = document.querySelector("template#post-tools").content;
+document.querySelector('#posts').addEventListener('click', function(e) {
+  var post = e.target.closest('.post');
+
+  if (post) {
+    var postTools = post.querySelector('.post__tools');
+    var postContent = post.querySelector('.post__content');
+    var starTarget = e.target.closest('[data-star-path]');
+    var viewTarget = e.target.closest('[data-view-link]');
+
     if(starTarget) {
-      fetch(starTarget.dataset['starPath'], {method: 'PATCH'}).then(resp => {
-        if(resp.status == 200) {
-          toggleClass(post, 'post_starred');
-        }
-      });
+      starPost(starTarget.dataset['starPath'], post)
     }
+
     if(viewTarget) {
       postContent.classList.add('post__content_viewed');
     }
-    toggleClass(postTools, 'post__tools_visible');
+
+    if(postTools) {
+      postTools.remove();
+    } else {
+      renderPostToolbar(post);
+    }
+
     toggleClass(postContent, 'post__content_blured');
-  });
-});
+  }
+})
+window.addEventListener('scroll', loadPosts)
 function toggleClass(node, className) {
   if(node.classList.contains(className)) {
     node.classList.remove(className);
@@ -25,4 +33,35 @@ function toggleClass(node, className) {
     node.classList.add(className);
   }
 }
-
+function renderPostToolbar(post) {
+  var postId = post.dataset['id']
+  var tools = templatePostTools.cloneNode(true);
+  var starIcon = tools.querySelector("[data-star-path]");
+  var redirectLink = tools.querySelector("[data-view-link]");
+  starIcon.dataset['starPath'] = starIcon.dataset['starPath'].replace(':id', postId)
+  redirectLink.pathname = redirectLink.pathname.replace(':id', postId)
+  post.prepend(tools);
+}
+function starPost(path, post){
+  fetch(path, {method: 'PATCH'}).then(function(resp) {
+    if(resp.status == 200) {
+      toggleClass(post, 'post_starred');
+    }
+  });
+}
+function loadPosts(e) {
+  if(window.scrollY + window.innerHeight >= document.body.scrollHeight) {
+    var posts = document.querySelector('#posts');
+    var nextLink = Array.from(posts.querySelectorAll("a[data-next-page]")).pop();
+    if(nextLink.tagName === 'A' && !nextLink.dataset['loaded']) {
+      nextLink.dataset['loaded'] = true
+      fetch(nextLink.href).then(async function(resp) {
+        var body = await resp.text();
+        var div = document.createElement('div')
+        div.innerHTML = body
+        posts.innerHTML += div.querySelector('#posts').innerHTML
+        div.remove();
+      });
+    }
+  }
+}
