@@ -19,19 +19,24 @@
   <% end %>
   <div class="page-end">
     <% if @posts.next_page %>
-      <a href="/posts?page=<%= @posts.next_page %>&loaded_at=<%= @loaded_at.to_i %>" hidden="" data-next-page>Next</a>
+      <a href="/posts?<%= URI.encode_www_form(@posts_params.merge(page: @posts.next_page)) %>" hidden="" data-next-page>Next</a>
     <% end %>
 
-    <% if !@posts.current_page_record_count.zero? && @posts.last_page? %>
+    <% if @posts_params[:unviewed] && !@posts.current_page_record_count.zero? && @posts.last_page? %>
       <form action="/posts/view" method="post">
         <input type="hidden" name="_method" value="PUT" />
-        <input type="hidden" name="viewed_at" value="<%= @loaded_at %>" />
+        <% @posts_params.to_h.each_pair do |key, value|%>
+          <% if value %>
+            <input type="hidden" name="<%= key %>" value="<%= value %>" />
+          <% end %>
+        <% end %>
+        <input type="hidden" name="post[viewed_at]" value="<%= @posts_params[:published_lt] %>" />
         <button type="submit" class="button">Mark All As Viewed</button>
       </form>
     <% end %>
 
     <% if @posts.pagination_record_count.zero? %>
-      <p>There are no unread articles.</p>
+      <p>There are no articles.</p>
     <% end %>
   </div>
 </section>

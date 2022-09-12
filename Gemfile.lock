@@ -1,6 +1,26 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    concurrent-ruby (1.1.10)
+    dry-container (0.10.1)
+      concurrent-ruby (~> 1.0)
+    dry-core (0.8.1)
+      concurrent-ruby (~> 1.0)
+    dry-inflector (0.3.0)
+    dry-logic (1.2.0)
+      concurrent-ruby (~> 1.0)
+      dry-core (~> 0.5, >= 0.5)
+    dry-struct (1.4.0)
+      dry-core (~> 0.5, >= 0.5)
+      dry-types (~> 1.5)
+      ice_nine (~> 0.11)
+    dry-types (1.5.1)
+      concurrent-ruby (~> 1.0)
+      dry-container (~> 0.3)
+      dry-core (~> 0.5, >= 0.5)
+      dry-inflector (~> 0.1, >= 0.1.2)
+      dry-logic (~> 1.0, >= 1.0.2)
+    ice_nine (0.11.2)
     mustermann (2.0.2)
       ruby2_keywords (~> 0.0.1)
     nio4r (2.5.8)
@@ -33,6 +53,8 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  dry-struct (~> 1.4)
+  dry-types (~> 1.5)
   nokogiri (~> 1.13)
   pg (~> 1.4)
   puma (~> 5.6)

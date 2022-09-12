@@ -11,3 +11,7 @@ gem "nokogiri", "~> 1.13"
 gem "rss", "~> 0.2.9"
 gem "sinatra", "~> 2.2"
 gem "puma", "~> 5.6"
+
+gem "dry-struct", "~> 1.4"
+
+gem "dry-types", "~> 1.5"

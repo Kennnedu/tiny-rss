@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tiny RSS</title>
+  </head>
+  <body>
+    <section>
+      <ul>
+        <li>
+          <a href="/posts?starred=true">Starred (<%= @starred_count %>)</a>
+        </li>
+        <li>
+          <a href="/posts?<%= URI.encode_www_form(@unreaded_feeds_today_params) %>">
+            Today (<%= @unreaded_feeds_today_count %>)
+          </a>
+        </li>
+        <% @feeds.each do |feed| %>
+          <% uri = URI(feed[:url]) %>
+          <li>
+            <a href="/posts?feed_id=<%= feed[:id] %>&unviewed=true">
+              <%= "#{uri.host}#{uri.path} (#{@unreaded_feeds_counts[feed[:id]].to_i})" %>
+            </a>
+          </li>
+        <% end %>
+      </ul>
+    </section>
+  </body>
+</html>
