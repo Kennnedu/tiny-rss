@@ -39,7 +39,7 @@ function renderPostToolbar(post) {
   var starIcon = tools.querySelector("[data-star-path]");
   var redirectLink = tools.querySelector("[data-view-link]");
   starIcon.dataset['starPath'] = starIcon.dataset['starPath'].replace(':id', postId)
-  redirectLink.pathname = redirectLink.pathname.replace(':id', postId)
+  redirectLink.href = redirectLink.href.replace(':id', postId)
   post.prepend(tools);
 }
 function starPost(path, post){
