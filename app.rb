@@ -74,7 +74,7 @@ get '/posts' do
   @posts_params = PostsParams.(params).to_h
   scope = PostsQuery.call(@posts_params)
   @posts = PostsQuery.paginate(scope, @posts_params[:page])
-  erb :posts, layout: :layout
+  erb :posts
 end
 
 get '/posts/:id/redirect' do

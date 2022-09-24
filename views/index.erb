@@ -3,23 +3,29 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Tiny RSS</title>
+    <link rel="stylesheet" href="index.css">
   </head>
   <body>
-    <section>
-      <ul>
-        <li>
-          <a href="/posts?starred=true">Starred (<%= @starred_count %>)</a>
+    <section class="container">
+      <ul class="links-menu">
+        <li class="links-menu__item">
+          <a href="/posts?starred=true" class="links-menu__item-link">
+            Starred
+            <span class="links-menu__item-counter"><%= @starred_count %></span>
+          </a>
         </li>
-        <li>
-          <a href="/posts?<%= URI.encode_www_form(@unreaded_feeds_today_params) %>">
-            Today (<%= @unreaded_feeds_today_count %>)
+        <li class="links-menu__item">
+          <a href="/posts?<%= URI.encode_www_form(@unreaded_feeds_today_params) %>" class="links-menu__item-link">
+            Today
+            <span class="links-menu__item-counter"><%= @unreaded_feeds_today_count %></span>
           </a>
         </li>
         <% @feeds.each do |feed| %>
           <% uri = URI(feed[:url]) %>
-          <li>
-            <a href="/posts?feed_id=<%= feed[:id] %>&unviewed=true">
-              <%= "#{uri.host}#{uri.path} (#{@unreaded_feeds_counts[feed[:id]].to_i})" %>
+          <li class="links-menu__item">
+            <a href="/posts?feed_id=<%= feed[:id] %>&unviewed=true" class="links-menu__item-link">
+            <%= uri.host %>
+            <span class="links-menu__item-counter"><%= @unreaded_feeds_counts[feed[:id]].to_i %></span>
             </a>
           </li>
         <% end %>
