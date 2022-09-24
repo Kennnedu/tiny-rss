@@ -61,39 +61,49 @@ class PostsQuery
 end
 
 get '/' do
-  @starred_count = Posts.exclude(starred_at: nil).count
-  @unviewed_count = Posts.where(viewed_at: nil).count
-  @unreaded_feeds_today_params = { published_gt: Date.today.to_time.to_i, published_lt: (Date.today + 1).to_time.to_i, unviewed: true }
-  @unreaded_feeds_today_count = PostsQuery.call(@unreaded_feeds_today_params).count
-  @feeds = Feeds.select(:id, :url).to_a
-  @unreaded_feeds_counts = Posts.where(viewed_at: nil).group_and_count(:feed_id).as_hash(:feed_id, :count)
-  erb :index
+  ScoutApm::Rack.transaction("get /", request.env) do
+    @starred_count = Posts.exclude(starred_at: nil).count
+    @unviewed_count = Posts.where(viewed_at: nil).count
+    @unreaded_feeds_today_params = { published_gt: Date.today.to_time.to_i, published_lt: (Date.today + 1).to_time.to_i, unviewed: true }
+    @unreaded_feeds_today_count = PostsQuery.call(@unreaded_feeds_today_params).count
+    @feeds = Feeds.select(:id, :url).to_a
+    @unreaded_feeds_counts = Posts.where(viewed_at: nil).group_and_count(:feed_id).as_hash(:feed_id, :count)
+    erb :index
+  end
 end
 
 get '/posts' do
-  @posts_params = PostsParams.(params).to_h
-  scope = PostsQuery.call(@posts_params)
-  @posts = PostsQuery.paginate(scope, @posts_params[:page])
-  erb :posts
+  ScoutApm::Rack.transaction("get /posts", request.env) do
+    @posts_params = PostsParams.(params).to_h
+    scope = PostsQuery.call(@posts_params)
+    @posts = PostsQuery.paginate(scope, @posts_params[:page])
+    erb :posts
+  end
 end
 
 get '/posts/:id/redirect' do
-  post = Posts.where(id: params['id'])
-  post.update(viewed_at: Time.now)
-  redirect post.first[:link]
+  ScoutApm::Rack.transaction("get /posts/#{params[:id]}/redirect", request.env) do
+    post = Posts.where(id: params['id'])
+    post.update(viewed_at: Time.now)
+    redirect post.first[:link]
+  end
 end
 
 patch '/posts/:id/star' do
-  post = Posts.where(id: params[:id])
-  starred_at = post.first[:starred_at] ? nil : Time.now
-  post.update(starred_at: starred_at)
-  redirect "/posts"
+  ScoutApm::Rack.transaction("patch /posts/#{params[:id]}/star", request.env) do
+    post = Posts.where(id: params[:id])
+    starred_at = post.first[:starred_at] ? nil : Time.now
+    post.update(starred_at: starred_at)
+    redirect "/posts"
+  end
 end
 
 put '/posts/view' do
-  posts_params = PostsParams.(params).to_h
-  @posts = PostsQuery.call(posts_params)
-  @posts.update(viewed_at: Time.at(params[:post][:viewed_at].to_i))
-  redirect '/'
+  ScoutApm::Rack.transaction("put /posts/view", request.env) do
+    posts_params = PostsParams.(params).to_h
+    @posts = PostsQuery.call(posts_params)
+    @posts.update(viewed_at: Time.at(params[:post][:viewed_at].to_i))
+    redirect '/'
+  end
 end
 

@@ -1,2 +1,2 @@
-web: ruby ./app.rb -p $PORT
+web: rackup -p $PORT -s puma
 console: bin/console
