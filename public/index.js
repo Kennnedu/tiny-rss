@@ -1,4 +1,5 @@
 var templatePostTools = document.querySelector("template#post-tools").content;
+var noticeRef = document.querySelector('.notice');
 document.querySelector('#posts').addEventListener('click', function(e) {
   var post = e.target.closest('.post');
 
@@ -7,6 +8,7 @@ document.querySelector('#posts').addEventListener('click', function(e) {
     var postContent = post.querySelector('.post__content');
     var starTarget = e.target.closest('[data-star-path]');
     var viewTarget = e.target.closest('[data-view-link]');
+    var copyLinkTarget = e.target.closest('[data-copy-link]');
 
     if(starTarget) {
       starPost(starTarget.dataset['starPath'], post)
@@ -14,6 +16,11 @@ document.querySelector('#posts').addEventListener('click', function(e) {
 
     if(viewTarget) {
       postContent.classList.add('post__content_viewed');
+    }
+
+    if(copyLinkTarget) {
+      navigator.clipboard.writeText(post.dataset['link']);
+      showNotice('Copied! 👍')
     }
 
     if(postTools) {
@@ -49,7 +56,7 @@ function starPost(path, post){
     }
   });
 }
-function loadPosts(e) {
+function loadPosts(_event) {
   if(window.scrollY + window.innerHeight >= document.body.scrollHeight) {
     var posts = document.querySelector('#posts');
     var nextLink = Array.from(posts.querySelectorAll("a[data-next-page]")).pop();
@@ -64,4 +71,12 @@ function loadPosts(e) {
       });
     }
   }
+}
+function showNotice(message) {
+  noticeRef.textContent = message;
+  toggleClass(noticeRef, 'notice_hidden');
+  const timeoutId = setTimeout(function(){
+    toggleClass(noticeRef, 'notice_hidden');
+    clearTimeout(timeoutId);
+  }, 2000)
 }
