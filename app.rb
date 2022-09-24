@@ -82,7 +82,7 @@ get '/posts' do
 end
 
 get '/posts/:id/redirect' do
-  ScoutApm::Rack.transaction("get /posts/#{params[:id]}/redirect", request.env) do
+  ScoutApm::Rack.transaction("get /posts/:id/redirect", request.env) do
     post = Posts.where(id: params['id'])
     post.update(viewed_at: Time.now)
     redirect post.first[:link]
@@ -90,7 +90,7 @@ get '/posts/:id/redirect' do
 end
 
 patch '/posts/:id/star' do
-  ScoutApm::Rack.transaction("patch /posts/#{params[:id]}/star", request.env) do
+  ScoutApm::Rack.transaction("patch /posts/:id/star", request.env) do
     post = Posts.where(id: params[:id])
     starred_at = post.first[:starred_at] ? nil : Time.now
     post.update(starred_at: starred_at)
