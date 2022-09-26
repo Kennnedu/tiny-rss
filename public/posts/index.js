@@ -57,7 +57,7 @@ function starPost(path, post){
   });
 }
 function loadPosts(_event) {
-  if(window.scrollY + window.innerHeight >= document.body.scrollHeight) {
+  if(window.scrollY + window.innerHeight >= (document.body.scrollHeight - 50)) {
     var posts = document.querySelector('#posts');
     var nextLink = Array.from(posts.querySelectorAll("a[data-next-page]")).pop();
     if(nextLink.tagName === 'A' && !nextLink.dataset['loaded']) {
