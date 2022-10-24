@@ -60,6 +60,7 @@ body {
   margin-bottom: 3rem;
   position:relative;
   border: 1px solid var(--white);
+  min-height: 100px;
 }
 .post__content {
   display: flex;
@@ -124,6 +125,7 @@ body {
     width: 90%;
   }
   .post {
+    min-height: 80px;
     margin-bottom: 2rem;
   }
   .post__tools {

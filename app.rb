@@ -24,6 +24,7 @@ class PostsParams < Dry::Struct
   attribute :published_gt, Types::Params::Integer.optional.default { nil }
   attribute :feed_id, Types::Params::Integer.optional.default { nil }
   attribute :page, Types::Params::Integer.default(1.freeze)
+  attribute :template, Types::String.default('titles'.freeze).enum('magazine', 'titles', 'compact')
 end
 
 class PostsQuery
@@ -50,6 +51,12 @@ class PostsQuery
       scope = scope.where(feed_id: params[:feed_id])
     end
 
+    if params[:template] == 'titles'
+      scope = scope.select(:id, :title, :link, :published_at, :viewed_at, :starred_at)
+    elsif params[:template] == 'compact'
+      scope = scope.select(:id, :title, :link, :description, :published_at, :viewed_at, :starred_at)
+    end
+
     scope = scope.order(:published_at).reverse
     scope
   end
@@ -74,10 +81,10 @@ end
 
 get '/posts' do
   ScoutApm::Rack.transaction("get /posts", request.env) do
-    @posts_params = PostsParams.(params).to_h
+    @posts_params = PostsParams.(params)
     scope = PostsQuery.call(@posts_params)
     @posts = PostsQuery.paginate(scope, @posts_params[:page])
-    erb :posts
+    erb :"posts/#{@posts_params.template}"
   end
 end
 

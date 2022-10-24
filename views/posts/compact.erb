@@ -12,7 +12,6 @@
       <% @posts.each do |post| %>
         <article class="post<%= post[:starred_at].nil? ? '' : ' post_starred' %>" data-id="<%=post[:id]%>" data-link="<%= post[:link] %>">
           <section class="post__content <%= post[:viewed_at].nil? ? '' : 'post__content_viewed' %>">
-            <img src="<%= post[:image] %>" class="post__image" loading="lazy">
             <div>
               <div class="post__title">
                 <%= post[:title] %>
@@ -29,7 +28,7 @@
       <% end %>
       <div class="page-end">
         <% if @posts.next_page %>
-          <a href="/posts?<%= URI.encode_www_form(@posts_params.merge(page: @posts.next_page)) %>" hidden="" data-next-page>Next</a>
+          <a href="/posts?<%= URI.encode_www_form(@posts_params.to_h.merge(page: @posts.next_page)) %>" hidden="" data-next-page>Next</a>
         <% end %>
 
         <% if @posts_params[:unviewed] && !@posts.current_page_record_count.zero? && @posts.last_page? %>

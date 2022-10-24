@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tiny RSS</title>
+    <link rel=icon href="data:,">
+    <link rel="stylesheet" href="posts/index.css">
+  </head>
+  <body>
+    <div class="notice notice_hidden"></div>
+    <section class="posts" id="posts">
+      <% @posts.each do |post| %>
+        <article class="post<%= post[:starred_at].nil? ? '' : ' post_starred' %>" data-id="<%=post[:id]%>" data-link="<%= post[:link] %>">
+          <section class="post__content <%= post[:viewed_at].nil? ? '' : 'post__content_viewed' %>">
+            <div>
+              <div class="post__title">
+                <%= post[:title] %>
+              </div>
+              <div class="post__info">
+                <%= "#{URI(post[:link]).host} / #{post[:published_at].strftime('%d %b %Y %H:%M %Z')}" %>
+              </div>
+            </div>
+          </section>
+        </article>
+      <% end %>
+      <div class="page-end">
+        <% if @posts.next_page %>
+          <a href="/posts?<%= URI.encode_www_form(@posts_params.to_h.merge(page: @posts.next_page)) %>" hidden="" data-next-page>Next</a>
+        <% end %>
+
+        <% if @posts_params[:unviewed] && !@posts.current_page_record_count.zero? && @posts.last_page? %>
+          <form action="/posts/view" method="post">
+            <input type="hidden" name="_method" value="PUT" />
+            <% @posts_params.to_h.each_pair do |key, value|%>
+              <% if value %>
+                <input type="hidden" name="<%= key %>" value="<%= value %>" />
+              <% end %>
+            <% end %>
+            <input type="hidden" name="post[viewed_at]" value="<%= @posts_params[:published_lt] %>" />
+            <button type="submit" class="button">Mark All As Viewed</button>
+          </form>
+        <% end %>
+
+        <% if @posts.pagination_record_count.zero? %>
+          <p>There are no articles.</p>
+        <% end %>
+      </div>
+    </section>
+
+    <% if !@posts.current_page_record_count.zero? && @posts.first_page? %>
+      <template id="post-tools">
+        <div class="post__tools">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="post__tools-item" data-star-path="/posts/:id/star">
+            <path d="M381.2 150.3L524.9 171.5C536.8 173.2 546.8 181.6 550.6 193.1C554.4 204.7 551.3 217.3 542.7 225.9L438.5 328.1L463.1 474.7C465.1 486.7 460.2 498.9 450.2 506C440.3 513.1 427.2 514 416.5 508.3L288.1 439.8L159.8 508.3C149 514 135.9 513.1 126 506C116.1 498.9 111.1 486.7 113.2 474.7L137.8 328.1L33.58 225.9C24.97 217.3 21.91 204.7 25.69 193.1C29.46 181.6 39.43 173.2 51.42 171.5L195 150.3L259.4 17.97C264.7 6.954 275.9-.0391 288.1-.0391C300.4-.0391 311.6 6.954 316.9 17.97L381.2 150.3z"/>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"class="post__tools-item" data-copy-link>
+            <path d="M579.8 267.7c56.5-56.5 56.5-148 0-204.5c-50-50-128.8-56.5-186.3-15.4l-1.6 1.1c-14.4 10.3-17.7 30.3-7.4 44.6s30.3 17.7 44.6 7.4l1.6-1.1c32.1-22.9 76-19.3 103.8 8.6c31.5 31.5 31.5 82.5 0 114L422.3 334.8c-31.5 31.5-82.5 31.5-114 0c-27.9-27.9-31.5-71.8-8.6-103.8l1.1-1.6c10.3-14.4 6.9-34.4-7.4-44.6s-34.4-6.9-44.6 7.4l-1.1 1.6C206.5 251.2 213 330 263 380c56.5 56.5 148 56.5 204.5 0L579.8 267.7zM60.2 244.3c-56.5 56.5-56.5 148 0 204.5c50 50 128.8 56.5 186.3 15.4l1.6-1.1c14.4-10.3 17.7-30.3 7.4-44.6s-30.3-17.7-44.6-7.4l-1.6 1.1c-32.1 22.9-76 19.3-103.8-8.6C74 372 74 321 105.5 289.5L217.7 177.2c31.5-31.5 82.5-31.5 114 0c27.9 27.9 31.5 71.8 8.6 103.9l-1.1 1.6c-10.3 14.4-6.9 34.4 7.4 44.6s34.4 6.9 44.6-7.4l1.1-1.6C433.5 260.8 427 182 377 132c-56.5-56.5-148-56.5-204.5 0L60.2 244.3z"/>
+          </svg>
+          <a href="/posts/:id/redirect" target="_blank" data-view-link>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="post__tools-item">
+              <path d="M256 64C256 46.33 270.3 32 288 32H415.1C415.1 32 415.1 32 415.1 32C420.3 32 424.5 32.86 428.2 34.43C431.1 35.98 435.5 38.27 438.6 41.3C438.6 41.35 438.6 41.4 438.7 41.44C444.9 47.66 447.1 55.78 448 63.9C448 63.94 448 63.97 448 64V192C448 209.7 433.7 224 416 224C398.3 224 384 209.7 384 192V141.3L214.6 310.6C202.1 323.1 181.9 323.1 169.4 310.6C156.9 298.1 156.9 277.9 169.4 265.4L338.7 96H288C270.3 96 256 81.67 256 64V64zM0 128C0 92.65 28.65 64 64 64H160C177.7 64 192 78.33 192 96C192 113.7 177.7 128 160 128H64V416H352V320C352 302.3 366.3 288 384 288C401.7 288 416 302.3 416 320V416C416 451.3 387.3 480 352 480H64C28.65 480 0 451.3 0 416V128z"/>
+            </svg>
+          </a>
+        </div>
+      </template>
+    <% end %>
+    <script src="posts/index.js" async></script>
+  </body>
+</html>
