@@ -82,6 +82,7 @@ body {
   display: flex;
   position: absolute;
   top: calc((100% - 60px) / 2);
+  height: calc(100% - ((100% - 60px) / 2) * 2);
   right: 37%;
   padding: 13px;
   justify-content: space-around;
