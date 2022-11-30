@@ -12,7 +12,9 @@
       <% @posts.each do |post| %>
         <article class="post<%= post[:starred_at].nil? ? '' : ' post_starred' %>" data-id="<%=post[:id]%>" data-link="<%= post[:link] %>">
           <section class="post__content <%= post[:viewed_at].nil? ? '' : 'post__content_viewed' %>">
-            <img src="<%= post[:image] %>" class="post__image" loading="lazy">
+            <% if post[:image] %>
+              <img src="<%= post[:image] %>" class="post__image" loading="lazy">
+            <% end %>
             <div>
               <div class="post__title">
                 <%= post[:title] %>
