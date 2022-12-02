@@ -29,6 +29,8 @@ task :fetch_feeds do
     feed_raw = HTTParty.get(feed[:url]).body
     Feedjira.parse(feed_raw).entries.each do |item|
       item_time = Time.at(item.published.to_i)
+      next if item_time <= last_publish
+
       Posts.insert({
         feed_id: feed[:id],
         image: item.image,
