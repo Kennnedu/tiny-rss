@@ -2,6 +2,8 @@ require_relative './app'
 require 'feedjira'
 require 'httparty'
 
+OLD_POST_TIMESTAMP = 2_592_000.freeze # 30 days - 60 * 60 * 24 * 30
+
 desc 'Setup DB schema'
 task :db_setup do
   DB.create_table(:feeds) do
@@ -24,7 +26,7 @@ end
 desc 'Fetch feeds'
 task :fetch_feeds do
   Feeds.all.each do |feed|
-    last_publish = Posts.where(feed_id: feed[:id]).order(:published_at).reverse.first&.[](:published_at) || Time.now.utc - (60 * 60 * 24 * 100)
+    last_publish = Posts.where(feed_id: feed[:id]).order(:published_at).reverse.first&.[](:published_at) || Time.now.utc - OLD_POST_TIMESTAMP
 
     feed_raw = HTTParty.get(feed[:url]).body
     Feedjira.parse(feed_raw).entries.each do |item|
@@ -41,4 +43,10 @@ task :fetch_feeds do
       })
     end
   end
+end
+
+desc 'Clear old viewed feed\'s posts'
+task :clear_feeds do
+  Posts.where(Sequel.lit('published_at < ?', Time.now.utc - OLD_POST_TIMESTAMP)).exclude(viewed_at: nil)
+    .where(starred_at: nil).delete
 end
