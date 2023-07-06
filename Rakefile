@@ -47,6 +47,5 @@ end
 
 desc 'Clear old viewed feed\'s posts'
 task :clear_feeds do
-  Posts.where(Sequel.lit('published_at < ?', Time.now.utc - OLD_POST_TIMESTAMP)).exclude(viewed_at: nil)
-    .where(starred_at: nil).delete
+  Posts.where(Sequel.lit('published_at < ?', Time.now.utc - OLD_POST_TIMESTAMP)).where(starred_at: nil).delete
 end

@@ -2,6 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
+    chronic (0.10.2)
     concurrent-ruby (1.1.10)
     crass (1.0.6)
     dry-container (0.10.1)
@@ -39,6 +40,8 @@ GEM
     mustermann (2.0.2)
       ruby2_keywords (~> 0.0.1)
     nio4r (2.5.8)
+    nokogiri (1.13.8-aarch64-linux)
+      racc (~> 1.4)
     nokogiri (1.13.8-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.13.8-x86_64-linux)
@@ -52,6 +55,9 @@ GEM
     rack (2.2.4)
     rack-protection (2.2.2)
       rack
+    rackup (1.0.0)
+      rack (< 3)
+      webrick
     rake (13.0.6)
     rexml (3.2.5)
     rss (0.2.9)
@@ -67,8 +73,12 @@ GEM
       rack-protection (= 2.2.2)
       tilt (~> 2.0)
     tilt (2.0.11)
+    webrick (1.8.1)
+    whenever (1.0.0)
+      chronic (>= 0.6.3)
 
 PLATFORMS
+  aarch64-linux
   x86_64-darwin-20
   x86_64-linux
 
@@ -80,11 +90,13 @@ DEPENDENCIES
   nokogiri (~> 1.13)
   pg (~> 1.4)
   puma (~> 5.6)
+  rackup
   rake (~> 13.0)
   rss (~> 0.2.9)
   scout_apm (~> 5.3)
   sequel (~> 5.59)
   sinatra (~> 2.2)
+  whenever (~> 1.0)
 
 RUBY VERSION
    ruby 3.0.4p208
