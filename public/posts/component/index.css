@@ -1,0 +1,145 @@
+:root {
+  --white:#fffffe;
+  --gray:#eff0f3;
+  --black-strong:#0d0d0d;
+  --black:#2a2a2a;
+  --orange:#ff8e3c;
+  --red:#d9376e;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+::selection, ::-moz-selection { /* Code for Firefox */
+  background: var(--orange);
+}
+body {
+  font-size:16px;
+  font-family:Verdana;
+  font-weight:400;
+  line-height:1.3;
+  color:var(--black);
+  background-color:var(--white);
+  position:relative;
+}
+.posts {
+  max-width:700px;
+  margin: 0 auto;
+  padding-top: 10px;
+}
+.button {
+  background-color: var(--gray);
+  border: none;
+  color: var(--black-strong);
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1rem;
+  cursor:pointer;
+}
+.footer {
+  display:flex;
+  justify-content:center;
+}
+.post {
+  padding: 3px;
+  margin-bottom: 3rem;
+  position:relative;
+  border: 1px solid var(--white);
+  min-height: 100px;
+}
+.post__content {
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+  user-select: none;
+}
+.post__image {
+  margin-right: 1rem;
+  width: 200px;
+  height:100%;
+}
+.post__title {
+  color:var(--black-strong);
+  font-size: 1.0rem;
+}
+.post__tools {
+  display: flex;
+  position: absolute;
+  top: calc((100% - 60px) / 2);
+  height: calc(100% - ((100% - 60px) / 2) * 2);
+  right: 37%;
+  padding: 13px;
+  justify-content: space-around;
+  width: 25%;
+  align-items: center;
+  z-index: 1;
+  background-color: white;
+  border-radius: .6rem;
+}
+.post__tools-item {
+  width: 27px;
+  height: 100%;
+  color: var(--gray);
+  cursor: pointer;
+}
+.post__info {
+  margin-top: 5px;
+  font-size: 0.8rem;
+  font-style: italic;
+  opacity: 0.9;
+}
+.post__description {
+  margin-top: 5px;
+  font-size: 0.8rem;
+}
+.post_starred {
+  border-left: 3px solid var(--orange);
+  padding-left: 15px;
+}
+.post__content_blured {
+  opacity: 0.8;
+  filter: blur(0.4rem);
+  cursor: auto;
+}
+.post__content_viewed {
+  opacity: 0.8;
+}
+@media only screen and (max-device-width: 568px) {
+  .posts {
+    width: 90%;
+  }
+  .post {
+    min-height: 80px;
+    margin-bottom: 2rem;
+  }
+  .post__tools {
+    right:25%;
+    width:50%;
+  }
+  .post__content {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+  .post__title {
+    font-size: .8rem;
+    font-weight: 600;
+  }
+  .post__description {
+    font-size: .7rem;
+  }
+  .post__info {
+    font-size: .6rem;
+  }
+  .post__image {
+    width: 100px;
+    margin-right: 0;
+    margin-left: 1rem;
+  }
+}
+.page-end {
+  display:flex;
+  justify-content:center;
+}

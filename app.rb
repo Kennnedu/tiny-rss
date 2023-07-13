@@ -24,7 +24,7 @@ class PostsParams < Dry::Struct
   attribute :published_gt, Types::Params::Integer.optional.default { nil }
   attribute :feed_id, Types::Params::Integer.optional.default { nil }
   attribute :page, Types::Params::Integer.default(1.freeze)
-  attribute :template, Types::String.default('titles'.freeze).enum('magazine', 'titles', 'compact')
+  attribute :template, Types::String.default('titles'.freeze).enum('magazine', 'titles', 'compact', 'component')
 end
 
 class PostsQuery
@@ -66,6 +66,8 @@ class PostsQuery
     scope
   end
 end
+
+set :erb, :trim => '-'
 
 get '/' do
   ScoutApm::Rack.transaction("get /", request.env) do
