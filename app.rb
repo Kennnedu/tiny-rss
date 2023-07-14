@@ -73,7 +73,7 @@ get '/' do
   ScoutApm::Rack.transaction("get /", request.env) do
     @starred_count = Posts.exclude(starred_at: nil).count
     @unviewed_count = Posts.where(viewed_at: nil).count
-    @unreaded_feeds_today_params = { published_gt: Date.today.to_time.to_i, published_lt: (Date.today + 1).to_time.to_i, unviewed: true }
+    @unreaded_feeds_today_params = { published_gt: Date.today.to_time.to_i, published_lt: (Date.today + 1).to_time.to_i, unviewed: true, template: :component }
     @unreaded_feeds_today_count = PostsQuery.call(@unreaded_feeds_today_params).count
     @feeds = Feeds.select(:id, :url).to_a
     @unreaded_feeds_counts = Posts.where(viewed_at: nil).group_and_count(:feed_id).as_hash(:feed_id, :count)
