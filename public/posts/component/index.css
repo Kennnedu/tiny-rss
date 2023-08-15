@@ -23,6 +23,19 @@ body {
   background-color:var(--white);
   position:relative;
 }
+header {
+  position: fixed;
+  display: flex;
+  justify-content: space-evenly;
+  background-color: var(--gray);
+  height: 60px;
+  width: 100%;
+  z-index: 1;
+  align-items: center;
+}
+main {
+  padding-top: 90px;
+}
 .posts {
   max-width:700px;
   margin: 0 auto;

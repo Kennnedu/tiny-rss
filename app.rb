@@ -67,7 +67,7 @@ class PostsQuery
   end
 end
 
-set :erb, :trim => '-'
+set :erb, trim: '-'
 
 get '/' do
   ScoutApm::Rack.transaction("get /", request.env) do
