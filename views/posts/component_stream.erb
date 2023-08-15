@@ -1,0 +1,11 @@
+<turbo-stream action="replace" target="rest-counter">
+  <template>
+    <strong id="rest-counter"><%= @posts_rest %></strong>
+  </template>
+</turbo-stream>
+
+<turbo-stream action="append" target="posts">
+  <template>
+    <%= erb(:'/posts/component/_posts', layout: false) %>
+  </template>
+</turbo-stream>

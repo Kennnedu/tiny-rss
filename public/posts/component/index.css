@@ -36,6 +36,9 @@ header {
 main {
   padding-top: 90px;
 }
+a {
+  color: var(--black);
+}
 .posts {
   max-width:700px;
   margin: 0 auto;

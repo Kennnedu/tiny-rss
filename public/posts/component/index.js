@@ -28,14 +28,8 @@ window.addEventListener('scroll', (_event) => {
     var posts = document.querySelector('#posts');
     var nextLink = Array.from(posts.querySelectorAll("a[data-next-page]")).pop();
     if(nextLink.tagName === 'A' && !nextLink.dataset['loaded']) {
-      nextLink.dataset['loaded'] = true
-      fetch(nextLink.href).then(async function(resp) {
-        var body = await resp.text();
-        var div = document.createElement('div')
-        div.innerHTML = body
-        posts.innerHTML += div.querySelector('#posts').innerHTML
-        div.remove();
-      });
+      nextLink.dataset['loaded'] = true;
+      nextLink.click();
     }
   }
 })

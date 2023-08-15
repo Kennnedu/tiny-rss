@@ -4,47 +4,18 @@
     <title>Tiny RSS</title>
     <link rel=icon href="data:,">
     <link rel="stylesheet" href="posts/component/index.css">
+    <script type="module">
+      import * as Turbo from 'https://cdn.skypack.dev/@hotwired/turbo';
+    </script>
   </head>
   <body>
     <header>
       <a href="/" data-turbo="false">&larr; Back</a>
+      <span>Rest: <strong id="rest-counter"><%= @posts_rest %></strong></span>
     </header>
     <main>
       <section class="posts" id="posts">
-        <% @posts.each do |post| -%>
-          <article class="post<%= post[:starred_at].nil? ? '' : ' post_starred' %>" data-id="<%=post[:id]%>" data-link="<%= post[:link] %>">
-            <section class="post__content <%= post[:viewed_at].nil? ? '' : 'post__content_viewed' %>">
-              <div>
-                <div class="post__title">
-                  <%= post[:title] %>
-                </div>
-                <div class="post__info">
-                  <%= "#{URI(post[:link]).host} / #{post[:published_at].strftime('%d %b %Y %H:%M %Z')}" %>
-                </div>
-              </div>
-            </section>
-          </article>
-        <% end -%>
-        <div class="page-end">
-          <% if @posts.next_page -%>
-            <a href="/posts?<%= URI.encode_www_form(@posts_params.to_h.merge(page: @posts.next_page)) -%>" hidden="" data-next-page>Next</a>
-          <% end -%>
-          <% if @posts_params[:unviewed] && !@posts.current_page_record_count.zero? && @posts.last_page? -%>
-            <form action="/posts/view" method="post">
-              <input type="hidden" name="_method" value="PUT" />
-              <% @posts_params.to_h.each_pair do |key, value| %>
-                <% if value -%>
-                  <input type="hidden" name="<%= key %>" value="<%= value %>" />
-                <% end -%>
-              <% end -%>
-              <input type="hidden" name="post[viewed_at]" value="<%= @posts_params[:published_lt] %>" />
-              <button type="submit" class="button">Mark All As Viewed</button>
-            </form>
-          <% end -%>
-          <% if @posts.pagination_record_count.zero? -%>
-            <p>There are no articles.</p>
-          <% end -%>
-        </div>
+        <%= erb(:'/posts/component/_posts', layout: false) %>
       </section>
     </main>
     <template id="rss-post-tools">

@@ -25,6 +25,7 @@ class PostsParams < Dry::Struct
   attribute :feed_id, Types::Params::Integer.optional.default(nil)
   attribute :page, Types::Params::Integer.default(1)
   attribute :template, Types::String.default('titles'.freeze).enum('magazine', 'titles', 'compact', 'component')
+  attribute :stream, Types::Params::Bool.default(false)
 end
 
 class PostsQuery
@@ -76,7 +77,16 @@ get '/posts' do
   @posts_params = PostsParams.call(params)
   scope = PostsQuery.call(@posts_params)
   @posts = PostsQuery.paginate(scope, @posts_params[:page])
-  erb :"posts/#{@posts_params.template}"
+  @posts_rest = @posts.pagination_record_count -
+                ((@posts_params[:page] - 1) * PostsQuery::PER_PAGE + @posts.current_page_record_count)
+  template = "posts/#{@posts_params.template}"
+
+  if @posts_params[:stream]
+    response.headers['Content-Type'] = 'text/vnd.turbo-stream.html; charset=utf-8'
+    erb "#{template}_stream".to_sym, layout: false
+  else
+    erb template.to_sym
+  end
 end
 
 get '/posts/:id/redirect' do
