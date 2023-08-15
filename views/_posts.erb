@@ -1,0 +1,17 @@
+  <% @posts.each do |post| -%>
+    <article class="post<%= post[:starred_at].nil? ? '' : ' post_starred' %>" data-id="<%=post[:id]%>" data-link="<%= post[:link] %>">
+      <p>
+        <span><%= post[:title] %></span>
+        <br>
+        <small>
+          <em>
+            <%= "#{URI(post[:link]).host} / #{post[:published_at].strftime('%d %b %Y %H:%M %Z')}" %>
+          </em>
+        </small>
+      </p>
+    </article>
+    <hr>
+  <% end -%>
+  <% if @posts.next_page -%>
+    <a href="/posts?<%= URI.encode_www_form(@posts_params.to_h.merge(page: @posts.next_page, stream: true)) -%>" hidden="" data-next-page>Next</a>
+  <% end -%>

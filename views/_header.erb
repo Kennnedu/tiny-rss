@@ -1,0 +1,42 @@
+<header id="header">
+  <nav>
+    <a href="#"></a>
+    <ul>
+      <li>
+        <%- unless @unreaded_feeds_today_count.zero? %>
+          <a href="/posts?<%= URI.encode_www_form(@unreaded_feeds_today_params) %>">Today</a>
+          <sup><%= @unreaded_feeds_today_count %></sup>
+        <% else %>
+          Today
+        <% end %>
+      </li>
+      <li>
+        <%- unless @starred_count.zero? %>
+          <a href="/posts?starred=true&template=magazine">Starred</a>
+          <sup><%= @starred_count %></sup>
+        <% else %>
+          Starred
+        <% end %>
+      </li>
+      <li>
+        <a href="#">Unreaded</a>
+        <ul>
+          <% @feeds.each do |feed| %>
+            <li>
+              <% uri = URI(feed[:url]) %>
+              <% counter = @unreaded_feeds_counts[feed[:id]].to_i %>
+
+              <%- unless counter.zero? %>
+                <a href="/posts?feed_id=<%= feed[:id] %>&unviewed=true"><%= uri.host %></a>
+                <sup><%= counter %></sup>
+              <% else %>
+                Today
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </li>
+    </ul>
+    <a href="#"></a>
+  </nav>
+</header>

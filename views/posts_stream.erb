@@ -1,0 +1,15 @@
+<!--
+<turbo-stream action="replace" target="subscriber-count">
+  <template>
+    <p id="subscriber-count" style="padding: 1em; background-color: lightyellow; text-align: center;">
+      You have <%#= rand(100) %> subscribers.
+    </p>
+  </template>
+</turbo-stream>
+-->
+
+<turbo-stream action="append" target="posts">
+  <template>
+    <%= erb :_posts, layout: false %>
+  </template>
+</turbo-stream>
