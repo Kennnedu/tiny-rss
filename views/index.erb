@@ -1,38 +1,27 @@
-<!doctype html>
-<html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tiny RSS</title>
-    <link rel=icon href="data:,">
-    <link rel="stylesheet" href="index.css">
-  </head>
-  <body>
-    <section class="container">
-      <ul class="links-menu">
-        <li class="links-menu__item <%= @starred_count.zero? ? 'links-menu__item_disabled' : nil %>">
-          <a href="/posts?starred=true&template=magazine" class="links-menu__item-link">
-            Starred
-            <span class="links-menu__item-counter"><%= @starred_count > 0 ? @starred_count : nil %></span>
-          </a>
-        </li>
-      <li class="links-menu__item <%= @unreaded_feeds_today_count.zero? ? 'links-menu__item_disabled' : nil %>">
-          <a href="/posts?<%= URI.encode_www_form(@unreaded_feeds_today_params) %>" class="links-menu__item-link">
-            Today
-            <span class="links-menu__item-counter"><%= @unreaded_feeds_today_count > 0 ? @unreaded_feeds_today_count : nil  %></span>
-          </a>
-        </li>
-        <% @feeds.each do |feed| %>
-          <% uri = URI(feed[:url]) %>
-          <% counter = @unreaded_feeds_counts[feed[:id]].to_i %>
+<section class="container">
+  <ul class="links-menu">
+    <li class="links-menu__item <%= @starred_count.zero? ? 'links-menu__item_disabled' : nil %>">
+      <a href="/posts?starred=true&template=magazine" class="links-menu__item-link">
+        Starred
+        <span class="links-menu__item-counter"><%= @starred_count > 0 ? @starred_count : nil %></span>
+      </a>
+    </li>
+  <li class="links-menu__item <%= @unreaded_feeds_today_count.zero? ? 'links-menu__item_disabled' : nil %>">
+      <a href="/posts?<%= URI.encode_www_form(@unreaded_feeds_today_params) %>" class="links-menu__item-link">
+        Today
+        <span class="links-menu__item-counter"><%= @unreaded_feeds_today_count > 0 ? @unreaded_feeds_today_count : nil  %></span>
+      </a>
+    </li>
+    <% @feeds.each do |feed| %>
+      <% uri = URI(feed[:url]) %>
+      <% counter = @unreaded_feeds_counts[feed[:id]].to_i %>
 
-          <li class="links-menu__item <%= counter.zero? ? 'links-menu__item_disabled' : nil %>">
-            <a href="/posts?feed_id=<%= feed[:id] %>&unviewed=true" class="links-menu__item-link">
-            <%= uri.host %>
-            <span class="links-menu__item-counter"><%= counter > 0 ? counter : nil %></span>
-            </a>
-          </li>
-        <% end %>
-      </ul>
-    </section>
-  </body>
-</html>
+      <li class="links-menu__item <%= counter.zero? ? 'links-menu__item_disabled' : nil %>">
+        <a href="/posts?feed_id=<%= feed[:id] %>&unviewed=true" class="links-menu__item-link">
+        <%= uri.host %>
+        <span class="links-menu__item-counter"><%= counter > 0 ? counter : nil %></span>
+        </a>
+      </li>
+    <% end %>
+  </ul>
+</section>

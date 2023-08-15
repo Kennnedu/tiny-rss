@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tiny RSS</title>
+    <link rel=icon href="data:,">
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css">
+    <script type="module">
+      import * as Turbo from 'https://cdn.skypack.dev/@hotwired/turbo';
+    </script>
+    <style>
+      nav > ul > li > ul > li > a {
+        display: inline-block;
+      }
+      header {
+        position: fixed;
+        max-width: unset;
+        right: 0;
+        margin: 0 auto;
+        max-height: 65px;
+        z-index: 1;
+        background-color: white;
+        border-bottom: 1px dashed;
+        width: 100vw;
+      }
+      main {
+        padding-top: 170px;
+        z-index: -1;
+      }
+    </style>
+  </head>
+  <body>
+    <%= erb :_header, layout: false %>
+    <main>
+      <%= yield %>
+    </main>
+  </body>
+</html>
