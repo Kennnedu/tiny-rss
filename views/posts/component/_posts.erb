@@ -1,16 +1,5 @@
 <% @posts.each do |post| -%>
-  <article class="post<%= post[:starred_at].nil? ? '' : ' post_starred' %>" data-id="<%=post[:id]%>" data-link="<%= post[:link] %>">
-    <section class="post__content <%= post[:viewed_at].nil? ? '' : 'post__content_viewed' %>">
-      <div>
-        <div class="post__title">
-          <%= post[:title] %>
-        </div>
-        <div class="post__info">
-          <%= "#{URI(post[:link]).host} / #{post[:published_at].strftime('%d %b %Y %H:%M %Z')}" %>
-        </div>
-      </div>
-    </section>
-  </article>
+  <%= erb(:'/posts/component/_post', layout: false, locals: { post: post }) %>
 <% end -%>
 <div class="page-end">
   <% if @posts.next_page -%>

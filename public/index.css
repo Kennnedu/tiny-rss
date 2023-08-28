@@ -47,6 +47,10 @@ body {
   font-weight: 500;
 }
 
+.links-menu__item-link:hover {
+  text-decoration: underline;
+}
+
 .links-menu__item-counter {
   color: var(--orange);
   font-weight: 600;

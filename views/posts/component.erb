@@ -18,40 +18,8 @@
         <%= erb(:'/posts/component/_posts', layout: false) %>
       </section>
     </main>
-    <template id="rss-post-tools">
-      <style>
-        .post__tools {
-          display: flex;
-          position: absolute;
-          top: 16%;
-          height: 40%;
-          right: 37%;
-          padding: 13px;
-          justify-content: space-around;
-          width: 25%;
-          align-items: center;
-          z-index: 1;
-          background-color: white;
-          border-radius: .6rem;
-          border: 1px solid var(--black);
-        }
-        .post__tools-item {
-          color: var(--gray);
-          cursor: pointer;
-          font-size: 30px;
-        }
-      </style>
-        <div class="post__tools">
-          <span id="starr" class="post__tools-item">
-            🌟
-          </span>
-          <span id="copy-link" class="post__tools-item" data-copy-link>
-            📋
-          </span>
-          <span id="redirect" class="post__tools-item" data-copy-link>
-            🔗
-          </span>
-        </div>
+    <template id="clipboard">
+      <slot></slot>
     </template>
     <template id="flash-message">
       <style>

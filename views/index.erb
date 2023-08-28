@@ -15,6 +15,12 @@
             <span class="links-menu__item-counter"><%= @starred_count > 0 ? @starred_count : nil %></span>
           </a>
         </li>
+        <li class="links-menu__item <%= @read_later_count.zero? ? 'links-menu__item_disabled' : nil %>">
+          <a href="/posts?read_later=true&template=component" class="links-menu__item-link">
+            Read Later
+            <span class="links-menu__item-counter"><%= @read_later_count > 0 ? @read_later_count : nil %></span>
+          </a>
+        </li>
       <li class="links-menu__item <%= @unreaded_feeds_today_count.zero? ? 'links-menu__item_disabled' : nil %>">
           <a href="/posts?<%= URI.encode_www_form(@unreaded_feeds_today_params) %>" class="links-menu__item-link">
             Today

@@ -1,0 +1,19 @@
+<article class="post" id="post-<%= post[:id] %>">
+  <section class="post__content <%= post[:viewed_at].nil? ? '' : 'post__content_viewed' %>">
+    <div class="post__title">
+      <%= post[:title] %>
+    </div>
+    <div class="post__info">
+      <div class="post__meta">
+        <%= "#{URI(post[:link]).host} / #{post[:published_at].strftime('%d %b %Y %H:%M %Z')}" %>
+      </div>
+      <div class="post__tools tools">
+        <txt-copy text="<%= post[:link] %>"><div class="tool tool__clipboard"></div></txt-copy>
+        <a href="<%= post[:link] %>" class="tool tool__link" target="_blank"></a>
+        <%# <a href="#" class="tool tool__pocket"></a> %>
+        <a href="/posts/<%= post[:id] %>/read_later?stream=true" class="tool tool__bookmark <%= post[:read_later_at].nil? ? '' : ' active' %>" data-turbo-method="patch"></a>
+        <a href="/posts/<%= post[:id] %>/star?stream=true" class="tool tool__star <%= post[:starred_at].nil? ? '' : ' active' %>" data-turbo-method="patch"></a>
+      </div>
+    </div>
+  </section>
+</article>

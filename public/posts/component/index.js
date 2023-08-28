@@ -1,28 +1,3 @@
-function toggleClass(node, className) {
-  if(node.classList.contains(className)) {
-    node.classList.remove(className);
-  } else {
-    node.classList.add(className);
-  }
-}
-
-document.querySelector('#posts').addEventListener('click', function(e) {
-  var post = e.target.closest('.post');
-
-  if(post) {
-    var postTools = post.querySelector('rss-post-tools');
-
-    if (postTools) {
-      postTools.remove()
-    } else {
-      var postTools = document.createElement('rss-post-tools');
-      postTools.setAttribute('post-id', post.dataset.id)
-      postTools.setAttribute('post-link', post.dataset.link);
-      post.prepend(postTools);
-    }
-  }
-})
-
 window.addEventListener('scroll', (_event) => {
   if(window.scrollY + window.innerHeight >= (document.body.scrollHeight - 50)) {
     var posts = document.querySelector('#posts');
@@ -52,59 +27,28 @@ class FlashMessage extends HTMLElement {
   }
 }
 
-class RssPostTools extends HTMLElement {
+
+class TxtCopy extends HTMLElement {
   constructor() {
     super();
 
-    const template = document.querySelector('template#rss-post-tools').content.cloneNode(true);
+    const template = document.querySelector('template#clipboard').content.cloneNode(true);
     this.attachShadow({mode: "open"}).appendChild(template);;
-    this.starr = this.starr.bind(this)
-    this.copyLink = this.copyLink.bind(this)
-    this.redirect = this.redirect.bind(this)
-    this.element = this.shadowRoot;
   }
 
   connectedCallback() {
-    this.parentPostRef = this.closest('.post');
-    this.postId = this.getAttribute('post-id');
-    this.postLink = this.getAttribute('post-link');
+    const text = this.getAttribute('text');
+    const slot = this.shadowRoot.querySelector('slot');
 
-    this.parentPostRef.querySelector('.post__content').classList.add('post__content_blured');
-    this.element.getElementById('starr').addEventListener('click', this.starr);
-    this.element.getElementById('copy-link').addEventListener('click', this.copyLink);
-    this.element.getElementById('redirect').addEventListener('click', this.redirect);
-  }
-
-  disconnectedCallback() {
-    this.parentPostRef.querySelector('.post__content').classList.remove('post__content_blured');
-  }
-
-  starr(e) {
-    e.preventDefault();
-    fetch(`/posts/${this.postId}/star`, { method: 'PATCH' }).then(resp => {
-      if(resp.status == 200) {
-        toggleClass(this.parentPostRef, 'post_starred');
-        this.remove();
-      }
-    });
-  }
-
-  copyLink(e) {
-    e.preventDefault();
-    navigator.clipboard.writeText(this.postLink);
-    let flash = document.createElement('flash-message');
-    flash.setAttribute('message', 'Copied! 👍');
-    document.body.prepend(flash);
-    this.remove();
-  }
-
-  redirect(e) {
-    e.preventDefault();
-    window.open(`/posts/${this.postId}/redirect`, '_blank');
-    toggleClass(this.parentPostRef.querySelector('.post__content'), 'post__content_viewed');
-    this.remove();
+    slot.addEventListener('click', event => {
+      event.preventDefault();
+      navigator.clipboard.writeText(text);
+      let flash = document.createElement('flash-message');
+      flash.setAttribute('message', 'Copied! 👍');
+      document.body.prepend(flash);
+    })
   }
 }
 
+window.customElements.define("txt-copy", TxtCopy)
 window.customElements.define("flash-message", FlashMessage);
-window.customElements.define("rss-post-tools", RssPostTools);
