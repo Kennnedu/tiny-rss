@@ -17,10 +17,10 @@ task :db_setup do
     String :title
     String :image
     String :description, text: true
-    Time :published_at
-    Time :viewed_at
-    Time :starred_at
-    Time :read_later_at
+    Timestamp :published_at
+    Timestamp :viewed_at, default: nil
+    Timestamp :starred_at, default: nil
+    Timestamp :read_later_at, default: nil
   end
 end
 

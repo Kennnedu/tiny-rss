@@ -6,7 +6,9 @@ require 'sinatra'
 require 'dry-struct'
 require 'dry-types'
 
-DB = Sequel.connect(ENV['DATABASE_URL'])
+DATABASE = './db/tiny_rss.sqlite3'.freeze
+
+DB = Sequel.sqlite(database: DATABASE)
 DB.logger = Logger.new($stdout)
 Posts = DB[:posts].extension(:pagination)
 Feeds = DB[:feeds]

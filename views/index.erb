@@ -10,7 +10,7 @@
     <section class="container">
       <ul class="links-menu">
         <li class="links-menu__item <%= @starred_count.zero? ? 'links-menu__item_disabled' : nil %>">
-          <a href="/posts?starred=true&template=magazine" class="links-menu__item-link">
+          <a href="/posts?starred=true&template=component" class="links-menu__item-link">
             Starred
             <span class="links-menu__item-counter"><%= @starred_count > 0 ? @starred_count : nil %></span>
           </a>
