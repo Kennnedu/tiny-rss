@@ -14,30 +14,23 @@
       <a href="/" data-turbo="false">&larr; Back</a>
       <span>Rest: <strong id="rest-counter"><%= @posts_rest %></strong></span>
     </header>
-    <main>
+    <main id="component-posts-infinity-scroll">
       <section class="posts" id="posts">
         <%= erb(:'/posts/component/_posts', layout: false) %>
       </section>
     </main>
-    <template id="clipboard">
-      <slot></slot>
-    </template>
-    <template id="flash-message">
-      <style>
-        div {
-          text-align: center;
-          background-color: var(--orange);
-          color: var(--blank-strong);
-          position: fixed;
-          width: 100%;
-          padding: 4px;
-          margin-top: 60px;
-          z-index: 1;
-          color: var(--white);
+    <%= erb(:'/posts/_ui_components', layout: false)  %>
+    <script>
+      window.addEventListener('scroll', (_event) => {
+        if(window.scrollY + window.innerHeight >= (document.body.scrollHeight - 50)) {
+          var posts = document.querySelector('#posts');
+          var nextLink = Array.from(posts.querySelectorAll("a[data-next-page]")).pop();
+          if(nextLink.tagName === 'A' && !nextLink.dataset['loaded']) {
+            nextLink.dataset['loaded'] = true;
+            nextLink.click();
+          }
         }
-      </style>
-      <div id="message"></div>
-    </template>
-    <script src="posts/component/index.js" async></script>
+      })
+    </script>
   </body>
 </html>

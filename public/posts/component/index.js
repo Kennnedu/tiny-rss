@@ -1,14 +1,3 @@
-window.addEventListener('scroll', (_event) => {
-  if(window.scrollY + window.innerHeight >= (document.body.scrollHeight - 50)) {
-    var posts = document.querySelector('#posts');
-    var nextLink = Array.from(posts.querySelectorAll("a[data-next-page]")).pop();
-    if(nextLink.tagName === 'A' && !nextLink.dataset['loaded']) {
-      nextLink.dataset['loaded'] = true;
-      nextLink.click();
-    }
-  }
-})
-
 class FlashMessage extends HTMLElement {
   constructor() {
     super();

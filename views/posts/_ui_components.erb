@@ -1,0 +1,20 @@
+<template id="flash-message">
+  <style>
+    div {
+      text-align: center;
+      background-color: var(--orange);
+      color: var(--blank-strong);
+      position: fixed;
+      width: 100%;
+      padding: 4px;
+      margin-top: 60px;
+      z-index: 1;
+      color: var(--white);
+    }
+  </style>
+  <div id="message"></div>
+</template>
+<template id="clipboard">
+  <slot></slot>
+</template>
+<script src="posts/component/index.js" async></script>
