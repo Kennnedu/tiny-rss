@@ -3,7 +3,7 @@
 <% end -%>
 <div class="page-end">
   <% if @posts.next_page -%>
-    <a href="/posts?<%= URI.encode_www_form(@posts_params.to_h.merge(page: @posts.next_page, stream: true)) -%>" hidden="" data-next-page>Next</a>
+    <a href="/posts?<%= URI.encode_www_form(@posts_params.to_h.compact.merge(page: @posts.next_page, stream: true)) -%>" hidden="" data-next-page>Next</a>
   <% end -%>
   <% if @posts_params[:unviewed] && !@posts.current_page_record_count.zero? && @posts.last_page? -%>
     <form action="/posts/view" method="post">

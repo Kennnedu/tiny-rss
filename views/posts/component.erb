@@ -4,8 +4,9 @@
     <title>Tiny RSS</title>
     <link rel=icon href="data:,">
     <link rel="stylesheet" href="posts/component/index.css">
-    <script type="module">
-      import * as Turbo from 'https://cdn.skypack.dev/@hotwired/turbo';
+    <script src="https://unpkg.com/@hotwired/turbo@8.0.5/dist/turbo.es2017-umd.js"></script>
+    <script>
+        Turbo.start(); // or other UMD functions
     </script>
   </head>
   <body>
