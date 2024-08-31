@@ -6,10 +6,16 @@ require 'sinatra'
 require 'dry-struct'
 require 'dry-types'
 
-DATABASE = './db/tiny_rss.sqlite3'.freeze
+DB = if ENV['APP_ENV'] == 'test'
+      Sequel.sqlite(database: './db/tiny_rss_test.sqlite3'.freeze)
+     else
+      Sequel.sqlite(database: './db/tiny_rss.sqlite3'.freeze)
+     end
 
-DB = Sequel.sqlite(database: DATABASE)
-DB.logger = Logger.new($stdout)
+if ENV['APP_ENV'] != 'test'
+  DB.logger = Logger.new($stdout)
+end
+
 Posts = DB[:posts].extension(:pagination)
 Feeds = DB[:feeds]
 
@@ -41,9 +47,9 @@ class PostsQuery
 
     scope = scope.exclude(read_later_at: nil) if params[:read_later]
 
-    scope = scope.where(Sequel.lit('published_at < ?', Time.at(params[:published_lt]))) if params[:published_lt]
+    scope = scope.where(Sequel.lit('published_at < ?', Time.at(params[:published_lt]))) if params[:published_lt].is_a?(Integer)
 
-    scope = scope.where(Sequel.lit('published_at > ?', Time.at(params[:published_gt]))) if params[:published_gt]
+    scope = scope.where(Sequel.lit('published_at > ?', Time.at(params[:published_gt]))) if params[:published_gt].is_a?(Integer)
 
     scope = scope.where(feed_id: params[:feed_id]) if params[:feed_id]
 

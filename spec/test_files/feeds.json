@@ -1,0 +1,10 @@
+[
+  {
+		"id" : 1,
+		"url" : "https://habr.com/ru/rss/all/all/?fl=ru"
+  },
+  {
+		"id" : 2,
+		"url" : "https://people.onliner.by/feed"
+  }
+]
