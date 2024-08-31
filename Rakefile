@@ -6,11 +6,11 @@ OLD_POST_TIMESTAMP = 2_592_000.freeze # 30 days - 60 * 60 * 24 * 30
 
 desc 'Setup DB schema'
 task :db_setup do
-  DB.create_table(:feeds) do
+  DB.create_table?(:feeds) do
     primary_key :id
     String :url, null: false
   end
-  DB.create_table(:posts) do
+  DB.create_table?(:posts) do
     primary_key :id
     foreign_key :feed_id, :feeds, null: false
     String :link, null: false#, unique: true
