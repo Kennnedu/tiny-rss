@@ -32,7 +32,7 @@
           <% counter = @unreaded_feeds_counts[feed[:id]].to_i %>
 
           <li class="links-menu__item <%= counter.zero? ? 'links-menu__item_disabled' : nil %>">
-            <a href="/posts?feed_id=<%= feed[:id] %>&unviewed=true" class="links-menu__item-link">
+            <a href="/posts?feed_id=<%= feed[:id] %>&unviewed=true&template=component" class="links-menu__item-link">
             <%= uri.host %>
             <span class="links-menu__item-counter"><%= counter > 0 ? counter : nil %></span>
             </a>

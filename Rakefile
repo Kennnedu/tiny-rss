@@ -1,4 +1,6 @@
-require_relative './app'
+require_relative './db'
+require 'nokogiri'
+require 'rss'
 require 'feedjira'
 require 'httparty'
 
