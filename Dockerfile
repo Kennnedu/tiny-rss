@@ -1,6 +1,12 @@
 FROM ruby:3.0.4
 
-RUN apt-get update -qq && apt-get install -y sqlite3 && apt-get install -y postgresql-client && apt-get install -y cron
+RUN apt-get update -qq && \
+    apt-get install -y \
+    sqlite3 chromium chromium-driver \
+    libappindicator3-1 fonts-liberation \
+    cron \
+    --no-install-recommends && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 

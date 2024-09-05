@@ -19,11 +19,22 @@ task :db_setup do
     String :title
     String :image
     String :description, text: true
+    String :clipping, text: true
     Timestamp :published_at
     Timestamp :viewed_at, default: nil
     Timestamp :starred_at, default: nil
     Timestamp :read_later_at, default: nil
   end
+  Feeds.insert(url: 'https://news.zerkalo.io/rss/all.rss')
+  Feeds.insert(url: 'https://dev.by/rss')
+  Feeds.insert(url: 'https://people.onliner.by/feed')
+  Feeds.insert(url: 'https://habr.com/ru/rss/all/all/?fl=ru')
+  Feeds.insert(url: 'https://kyky.org/rss')
+  Feeds.insert(url: 'https://kaktutzhit.by/rss')
+  Feeds.insert(url: 'https://feeds.feedburner.com/TheHackersNews')
+  Feeds.insert(url: 'https://kevquirk.com/feed/')
+  Feeds.insert(url: 'https://hackernoon.com/feed')
+  Feeds.insert(url: 'https://feeds.buzzsprout.com/1895262.rss')
 end
 
 desc 'Fetch feeds'

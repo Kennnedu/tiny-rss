@@ -1,6 +1,7 @@
 require 'sinatra'
 
 require_relative './db'
+require_relative './browser'
 
 set :erb, trim: '-'
 
