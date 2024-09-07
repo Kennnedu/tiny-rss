@@ -37,6 +37,13 @@ get '/posts' do
   end
 end
 
+put '/posts/view' do
+  posts_params = PostsParams.call(params).to_h
+  @posts = PostsQuery.call(posts_params)
+  @posts.update(viewed_at: Time.at(params[:post][:viewed_at].to_i))
+  redirect '/'
+end
+
 get '/posts/:id/redirect' do
   post = Posts.where(id: params['id'])
   post.update(viewed_at: Time.now)
@@ -69,9 +76,21 @@ patch '/posts/:id/read_later' do
   end
 end
 
-put '/posts/view' do
-  posts_params = PostsParams.call(params).to_h
-  @posts = PostsQuery.call(posts_params)
-  @posts.update(viewed_at: Time.at(params[:post][:viewed_at].to_i))
-  redirect '/'
+get '/posts/:id/cropper' do
+  @post = Posts.where(id: params['id']).first
+  browser = Browser.new
+  @image = browser.screen_base64(@post[:link])
+  erb :'posts/cropper'
+end
+
+post '/posts/:id/cropper' do
+  logger.info params.keys
+  post = Posts.where(id: params['id'])
+  post.update(clipping: params['clipping'])
+  redirect "/posts/#{params['id']}/analize"
+end
+
+get '/posts/:id/analize' do
+  @post = Posts.where(id: params['id']).first
+  erb :'posts/analize'
 end

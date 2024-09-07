@@ -2,7 +2,7 @@ require 'ferrum'
 
 class Browser
   WS_URL = 'ws://127.0.0.1:9222'
-  TIMEOUT = 10
+  TIMEOUT = 20
 
   def initialize
     @browser = Ferrum::Browser.new(ws_url: WS_URL, timeout: TIMEOUT)
