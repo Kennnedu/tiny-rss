@@ -3,6 +3,8 @@ set -e
 
 bundle install
 
+bundle exec rake db_setup
+
 whenever --update-crontab
 
 service cron start

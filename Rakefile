@@ -25,16 +25,20 @@ task :db_setup do
     Timestamp :starred_at, default: nil
     Timestamp :read_later_at, default: nil
   end
-  Feeds.insert(url: 'https://news.zerkalo.io/rss/all.rss')
-  Feeds.insert(url: 'https://dev.by/rss')
-  Feeds.insert(url: 'https://people.onliner.by/feed')
-  Feeds.insert(url: 'https://habr.com/ru/rss/all/all/?fl=ru')
-  Feeds.insert(url: 'https://kyky.org/rss')
-  Feeds.insert(url: 'https://kaktutzhit.by/rss')
-  Feeds.insert(url: 'https://feeds.feedburner.com/TheHackersNews')
-  Feeds.insert(url: 'https://kevquirk.com/feed/')
-  Feeds.insert(url: 'https://hackernoon.com/feed')
-  Feeds.insert(url: 'https://feeds.buzzsprout.com/1895262.rss')
+  [
+    'https://news.zerkalo.io/rss/all.rss',
+    'https://dev.by/rss',
+    'https://people.onliner.by/feed',
+    'https://habr.com/ru/rss/all/all/?fl=ru',
+    'https://kyky.org/rss',
+    'https://kaktutzhit.by/rss',
+    'https://feeds.feedburner.com/TheHackersNews',
+    'https://kevquirk.com/feed/',
+    'https://hackernoon.com/feed',
+    'https://feeds.buzzsprout.com/1895262.rss',
+  ].each do |url|
+    Feeds.where(url: url).first || Feeds.insert(url: url)
+  end
 end
 
 desc 'Fetch feeds'
