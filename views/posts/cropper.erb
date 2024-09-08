@@ -43,11 +43,15 @@
             ctx.drawImage(image, 0, 0);
         };
 
-        canvas.addEventListener('mousedown', (e) => {
+        canvas.addEventListener('click', (e) => {
+          if(isDragging) {
+            isDragging = false;
+          } else {
             const rect = canvas.getBoundingClientRect();
             startX = e.clientX - rect.left;
             startY = e.clientY - rect.top;
             isDragging = true;
+          }
         });
 
         canvas.addEventListener('mousemove', (e) => {
@@ -63,10 +67,6 @@
                 ctx.lineWidth = 2;
                 ctx.strokeRect(startX, startY, endX - startX, endY - startY);
             }
-        });
-
-        canvas.addEventListener('mouseup', () => {
-            isDragging = false;
         });
 
         cropBtn.addEventListener('click', () => {
