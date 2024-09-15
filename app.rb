@@ -84,7 +84,6 @@ get '/posts/:id/cropper' do
 end
 
 post '/posts/:id/cropper' do
-  logger.info params.keys
   post = Posts.where(id: params['id'])
   post.update(clipping: params['clipping'])
   redirect "/posts/#{params['id']}/analize"
@@ -92,5 +91,20 @@ end
 
 get '/posts/:id/analize' do
   @post = Posts.where(id: params['id']).first
+  @comments = PostComments.where(post_id: @post[:id]).all.map do |comment|
+    comment[:coordinates] = JSON.parse(comment[:coordinates])
+    comment
+  end
+
   erb :'posts/analize'
+end
+
+get '/posts/:post_id/comments/new' do
+  @coordinates = ERB::Util.html_escape(params['coordinates'])
+  erb :'posts/comments/new'
+end
+
+post '/posts/:post_id/comments' do
+  PostComments.insert(post_id: params['post_id'], coordinates: params['coordinates'], content: params['content'])
+  redirect "/posts/#{params['post_id']}/analize"
 end
