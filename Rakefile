@@ -25,6 +25,12 @@ task :db_setup do
     Timestamp :starred_at, default: nil
     Timestamp :read_later_at, default: nil
   end
+  DB.create_table?(:post_comments) do
+    primary_key :id
+    foreign_key :post_id, :posts, null: false
+    String :coordinates, text: true
+    String :content, text: true
+  end
   [
     'https://news.zerkalo.io/rss/all.rss',
     'https://dev.by/rss',
