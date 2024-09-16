@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cropper image</title>
+    <link rel=icon href="data:,">
+    <style>
+        #canvas {
+            border: 1px solid black;
+            cursor: crosshair;
+        }
+    </style>
+</head>
+<body>
+    <div id="base-64-image" data-base64="data:image/png;base64,<%=@image%>" />
+    <canvas id="canvas"></canvas>
+    <br><br>
+    <button id="cropBtn">Crop Image</button>
+    <form action="/posts/<%= @post[:id] %>/cropper" enctype="multipart/form-data" method="post">
+       <input name="clipping" type="text" id="base64Input" readonly hidden>
+       <input type="submit" value="Download Cropped Image">
+    </form>
+    <br><br>
+    <img id="croppedImage" alt="Cropped Image">
+
+    <script>
+        const base64Image = document.getElementById('base-64-image').dataset.base64
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const cropBtn = document.getElementById('cropBtn');
+        const croppedImage = document.getElementById('croppedImage');
+        const imageInput = document.getElementById('base64Input');
+
+        let image = new Image();
+        let startX, startY, endX, endY;
+        let isDragging = false;
+
+        image.src = base64Image
+        image.onload = function() {
+            canvas.width = image.width;
+            canvas.height = image.height;
+            ctx.drawImage(image, 0, 0);
+        };
+
+        canvas.addEventListener('click', (e) => {
+          if(isDragging) {
+            isDragging = false;
+          } else {
+            const rect = canvas.getBoundingClientRect();
+            startX = e.clientX - rect.left;
+            startY = e.clientY - rect.top;
+            isDragging = true;
+          }
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                const rect = canvas.getBoundingClientRect();
+                endX = e.clientX - rect.left;
+                endY = e.clientY - rect.top;
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(image, 0, 0);
+
+                ctx.strokeStyle = 'red';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(startX, startY, endX - startX, endY - startY);
+            }
+        });
+
+        cropBtn.addEventListener('click', () => {
+            if (startX && startY && endX && endY) {
+                const width = endX - startX;
+                const height = endY - startY;
+                const croppedCanvas = document.createElement('canvas');
+                const croppedCtx = croppedCanvas.getContext('2d');
+
+                croppedCanvas.width = width;
+                croppedCanvas.height = height;
+
+                croppedCtx.drawImage(image, startX, startY, width, height, 0, 0, width, height);
+
+                const croppedDataURL = croppedCanvas.toDataURL('image/png');
+                croppedImage.src = croppedDataURL;
+                imageInput.value = croppedDataURL
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+

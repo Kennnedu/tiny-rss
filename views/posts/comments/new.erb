@@ -1,0 +1,7 @@
+<turbo-frame id="commentable">
+  <form action="/posts/<%= params['post_id'] %>/comments" method="post" data-turbo="false">
+    <input type="hidden" name="coordinates" value=<%= @coordinates %>>
+    <textarea name="content" rows="10" cols="50"></textarea>
+    <input type="submit" value="Add comment">
+  </form>
+</turbo-frame>

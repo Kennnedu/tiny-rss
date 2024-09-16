@@ -15,6 +15,7 @@ end
 
 Posts = DB[:posts].extension(:pagination)
 Feeds = DB[:feeds]
+PostComments = DB[:post_comments]
 
 module Types
   include Dry.Types()

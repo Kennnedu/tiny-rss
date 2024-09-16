@@ -17,9 +17,11 @@ gem "httparty", "~> 0.20.0"
 gem "rackup"
 gem "whenever", "~> 1.0"
 gem "sqlite3", "~> 1.6"
+gem "ferrum", "~> 0.15"
 
 group :development, :test do
   gem "rack-test", "~> 2.1"
   gem "capybara", "~> 3.40"
   gem "minitest", "~> 5.25"
+  gem "rerun", "~> 0.14.0"
 end

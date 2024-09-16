@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require_relative '../db'
+require_relative '../browser'
 require 'irb'
 
 IRB.start

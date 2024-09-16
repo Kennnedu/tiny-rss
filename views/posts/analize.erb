@@ -1,0 +1,107 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tiny RSS</title>
+    <link rel=icon href="data:,">
+    <script src="https://unpkg.com/@hotwired/turbo@8.0.5/dist/turbo.es2017-umd.js"></script>
+    <script>
+        Turbo.start(); // or other UMD functions
+    </script>
+    <style>
+      body {
+        position: fixed;
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+      }
+      #article-image {
+        width: 70%;
+        height: 100%;
+        overflow: scroll;
+      }
+      #workspace {
+        width: 30%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="article-image">
+      <svg id="svg-image">
+        <image id="base64-image" href="<%= @post[:clipping] %>"></image>
+
+        <% @comments.each do |comment| %>
+          <rect x="<%= comment[:coordinates]['x']%>"
+                y="<%= comment[:coordinates]['y']%>"
+                width="<%= comment[:coordinates]['width']%>"
+                height="<%= comment[:coordinates]['height']%>"
+                fill="transparent"
+                stroke="blue"
+                class="commented">
+            <title><%= comment[:content]%></title>
+          </rect>
+        <% end%>
+      </svg>
+    </div>
+    <div id="workspace"></div>
+    <script>
+      const workspace = document.getElementById('workspace')
+      const svgImage = document.getElementById('svg-image');
+      const base64ImageTag = document.getElementById('base64-image')
+      const base64Image = base64ImageTag.href.baseVal
+      let isDrawing = false;
+      let startX, startY, rectAttributes;
+
+			const image = new Image();
+			image.src = base64Image;
+      svgImage.setAttribute('height', image.height);
+      svgImage.setAttribute('width', image.width);
+      base64ImageTag.height = image.height;
+      base64ImageTag.width = image.width;
+      image.onload = function() {
+        svgImage.width = image.width;
+        svgImage.height = image.height;
+      };
+
+      svgImage.addEventListener('click', function(event) {
+        if(isDrawing) {
+          isDrawing = false;
+          rectAttributes = {}
+          for (let attr of rect.attributes) {
+            rectAttributes[attr.name] = attr.value;
+          }
+          workspace.innerHTML = `<turbo-frame src="/posts/<%= @post[:id] %>/comments/new?coordinates=${encodeURIComponent(JSON.stringify(rectAttributes))}" id="commentable"></turbo-frame>`
+        } else {
+          isDrawing = true;
+          rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          startX = event.offsetX;
+          startY = event.offsetY
+          rect.setAttribute('x', startX);
+          rect.setAttribute('y', startY);
+          rect.setAttribute('width', 0);
+          rect.setAttribute('height', 0);
+          rect.setAttribute('fill', 'transparent');
+          rect.setAttribute('stroke', 'blue');
+          rect.setAttribute('stroke-width', 2);
+          svgImage.appendChild(rect);
+        }
+      });
+      svgImage.addEventListener('mousemove', function(e) {
+        if (!isDrawing) return;
+        const currentX = e.offsetX;
+        const currentY = e.offsetY;
+
+        // Calculate the new width and height based on the current mouse position
+        const width = Math.abs(currentX - startX);
+        const height = Math.abs(currentY - startY);
+
+        // Set the new width and height
+        rect.setAttribute('width', width);
+        rect.setAttribute('height', height);
+
+        // Adjust the position if the mouse moves left/up from the starting point
+        rect.setAttribute('x', Math.min(currentX, startX));
+        rect.setAttribute('y', Math.min(currentY, startY));
+      });
+    </script>
+  </body>
+</html>

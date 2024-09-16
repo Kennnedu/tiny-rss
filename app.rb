@@ -1,6 +1,7 @@
 require 'sinatra'
 
 require_relative './db'
+require_relative './browser'
 
 set :erb, trim: '-'
 
@@ -36,6 +37,13 @@ get '/posts' do
   end
 end
 
+put '/posts/view' do
+  posts_params = PostsParams.call(params).to_h
+  @posts = PostsQuery.call(posts_params)
+  @posts.update(viewed_at: Time.at(params[:post][:viewed_at].to_i))
+  redirect '/'
+end
+
 get '/posts/:id/redirect' do
   post = Posts.where(id: params['id'])
   post.update(viewed_at: Time.now)
@@ -68,9 +76,35 @@ patch '/posts/:id/read_later' do
   end
 end
 
-put '/posts/view' do
-  posts_params = PostsParams.call(params).to_h
-  @posts = PostsQuery.call(posts_params)
-  @posts.update(viewed_at: Time.at(params[:post][:viewed_at].to_i))
-  redirect '/'
+get '/posts/:id/cropper' do
+  @post = Posts.where(id: params['id']).first
+  browser = Browser.new
+  @image = browser.screen_base64(@post[:link])
+  erb :'posts/cropper'
+end
+
+post '/posts/:id/cropper' do
+  post = Posts.where(id: params['id'])
+  post.update(clipping: params['clipping'])
+  redirect "/posts/#{params['id']}/analize"
+end
+
+get '/posts/:id/analize' do
+  @post = Posts.where(id: params['id']).first
+  @comments = PostComments.where(post_id: @post[:id]).all.map do |comment|
+    comment[:coordinates] = JSON.parse(comment[:coordinates])
+    comment
+  end
+
+  erb :'posts/analize'
+end
+
+get '/posts/:post_id/comments/new' do
+  @coordinates = ERB::Util.html_escape(params['coordinates'])
+  erb :'posts/comments/new'
+end
+
+post '/posts/:post_id/comments' do
+  PostComments.insert(post_id: params['post_id'], coordinates: params['coordinates'], content: params['content'])
+  redirect "/posts/#{params['post_id']}/analize"
 end

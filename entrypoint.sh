@@ -3,8 +3,10 @@ set -e
 
 bundle install
 
+bundle exec rake db_setup
+
 whenever --update-crontab
 
 service cron start
 
-bundle exec rackup -p 3333 -o 0.0.0.0 -s puma
+chromium --headless --no-sandbox --disable-gpu --remote-debugging-port=9222 --disable-dev-shm-usage & bundle exec rackup -p 3333 -o 0.0.0.0 -s puma

@@ -19,10 +19,31 @@ task :db_setup do
     String :title
     String :image
     String :description, text: true
+    String :clipping, text: true
     Timestamp :published_at
     Timestamp :viewed_at, default: nil
     Timestamp :starred_at, default: nil
     Timestamp :read_later_at, default: nil
+  end
+  DB.create_table?(:post_comments) do
+    primary_key :id
+    foreign_key :post_id, :posts, null: false
+    String :coordinates, text: true
+    String :content, text: true
+  end
+  [
+    'https://news.zerkalo.io/rss/all.rss',
+    'https://dev.by/rss',
+    'https://people.onliner.by/feed',
+    'https://habr.com/ru/rss/all/all/?fl=ru',
+    'https://kyky.org/rss',
+    'https://kaktutzhit.by/rss',
+    'https://feeds.feedburner.com/TheHackersNews',
+    'https://kevquirk.com/feed/',
+    'https://hackernoon.com/feed',
+    'https://feeds.buzzsprout.com/1895262.rss',
+  ].each do |url|
+    Feeds.where(url: url).first || Feeds.insert(url: url)
   end
 end
 
