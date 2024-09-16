@@ -24,9 +24,24 @@ task :db_setup do
     Timestamp :starred_at, default: nil
     Timestamp :read_later_at, default: nil
   end
+  [
+    'https://news.zerkalo.io/rss/all.rss',
+    'https://dev.by/rss',
+    'https://people.onliner.by/feed',
+    'https://habr.com/ru/rss/all/all/?fl=ru',
+    'https://kyky.org/rss',
+    'https://kaktutzhit.by/rss',
+    'https://feeds.feedburner.com/TheHackersNews',
+    'https://kevquirk.com/feed/',
+    'https://hackernoon.com/feed',
+    'https://feeds.buzzsprout.com/1895262.rss',
+  ].each do |url|
+    Feeds.where(url: url).first || Feeds.insert(url: url)
+	end
 end
 
 desc 'Fetch feeds'
+  font-family:Verdana;
 task :fetch_feeds do
   Feeds.all.each do |feed|
     last_publish = Posts.where(feed_id: feed[:id]).order(:published_at).reverse.first&.[](:published_at) || Time.now.utc - OLD_POST_TIMESTAMP
