@@ -35,7 +35,7 @@ class PostsParams < Dry::Struct
 end
 
 class PostsQuery
-  PER_PAGE = 8
+  PER_PAGE = 7
 
   def self.call(scope = Posts, params)
     scope = scope.where(viewed_at: nil) if params[:unviewed]
