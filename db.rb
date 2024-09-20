@@ -30,7 +30,7 @@ class PostsParams < Dry::Struct
   attribute :published_gt, Types::Params::Integer.optional.default(nil)
   attribute :feed_id, Types::Params::Integer.optional.default(nil)
   attribute :page, Types::Params::Integer.default(1)
-  attribute :template, Types::String.default('titles'.freeze).enum('magazine', 'titles', 'compact', 'component')
+  attribute :template, Types::String.default('titles'.freeze).enum('magazine', 'titles', 'compact')
   attribute :stream, Types::Params::Bool.default(false)
 end
 
@@ -51,9 +51,9 @@ class PostsQuery
     scope = scope.where(feed_id: params[:feed_id]) if params[:feed_id]
 
     if params[:template] == 'titles'
-      scope = scope.select(:id, :title, :link, :published_at, :viewed_at, :starred_at)
+      scope = scope.select(:id, :title, :link, :published_at, :viewed_at, :starred_at, :read_later_at)
     elsif params[:template] == 'compact'
-      scope = scope.select(:id, :title, :link, :description, :published_at, :viewed_at, :starred_at)
+      scope = scope.select(:id, :title, :link, :description, :published_at, :viewed_at, :starred_at, :read_later_at)
     end
 
     scope.order(:published_at).reverse
