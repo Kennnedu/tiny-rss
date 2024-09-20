@@ -17,6 +17,7 @@ gem "httparty", "~> 0.20.0"
 gem "rackup"
 gem "whenever", "~> 1.0"
 gem "sqlite3", "~> 1.6"
+gem "htmlcompressor", "~> 0.4.0"
 
 group :development, :test do
   gem "rack-test", "~> 2.1"
