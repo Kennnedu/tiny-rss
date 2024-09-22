@@ -4,3 +4,4 @@
 /log/*
 !/tmp/.keep
 !/log/.keep
+node_modules/
