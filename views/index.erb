@@ -4,9 +4,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Tiny RSS</title>
     <link rel=icon href="data:,">
-    <link rel="stylesheet" href="index.css">
+    <script src="main.js"></script>
   </head>
-  <body>
+  <body class="bg-normal">
     <section class="container">
       <ul class="links-menu">
         <li class="links-menu__item <%= @starred_count.zero? ? 'links-menu__item_disabled' : nil %>">
