@@ -1,22 +1,3 @@
-class FlashMessage extends HTMLElement {
-  constructor() {
-    super();
-
-    const template = document.querySelector('template#flash-message').content.cloneNode(true);
-    this.attachShadow({mode: "open"}).appendChild(template);;
-  }
-
-  connectedCallback() {
-    const message = this.getAttribute('message');
-    this.shadowRoot.getElementById('message').innerText = message;
-
-    setTimeout(() => {
-      this.remove();
-    }, 3000)
-  }
-}
-
-
 class TxtCopy extends HTMLElement {
   constructor() {
     super();
@@ -40,4 +21,4 @@ class TxtCopy extends HTMLElement {
 }
 
 window.customElements.define("txt-copy", TxtCopy)
-window.customElements.define("flash-message", FlashMessage);
+

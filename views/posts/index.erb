@@ -3,18 +3,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Tiny RSS</title>
     <link rel=icon href="data:,">
-    <link rel="stylesheet" href="posts/index.css">
-    <script src="https://unpkg.com/@hotwired/turbo@8.0.5/dist/turbo.es2017-umd.js"></script>
-    <script>
-        Turbo.start(); // or other UMD functions
-    </script>
+    <script src="main.js"></script>
   </head>
   <body>
     <header>
-      <a href="/" data-turbo="false" style="text-decoration:none;font-size:18px;font-weight:bold;">
+      <a href="/" style="text-decoration:none;font-size:18px;font-weight:bold;">
         Menu
       </a>
-      <select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+      <select onchange="this.options[this.selectedIndex].value && (Turbo.visit(this.options[this.selectedIndex].value));">
         <option value="">Select...</option>
         <option value="/posts?<%= URI.encode_www_form(@posts_params.to_h.compact.merge(template: 'magazine'))%>">Magazine</option>
         <option value="/posts?<%= URI.encode_www_form(@posts_params.to_h.compact.merge(template: 'titles'))%>">Titles</option>
@@ -27,7 +23,8 @@
         <%= erb(:'/posts/posts', layout: false) %>
       </section>
     </main>
-    <%= erb(:'/posts/ui_components', layout: false)  %>
+    <%= erb(:'/shared/clipboard', layout: false)  %>
+    <%= erb(:'/shared/flash_message', layout: false)  %>
     <script>
       window.addEventListener('scroll', (_event) => {
         if(window.scrollY + window.innerHeight >= (document.body.scrollHeight - 50)) {
