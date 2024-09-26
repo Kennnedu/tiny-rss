@@ -30,7 +30,7 @@ class PostsParams < Dry::Struct
   attribute :published_gt, Types::Params::Integer.optional.default(nil)
   attribute :feed_id, Types::Params::Integer.optional.default(nil)
   attribute :page, Types::Params::Integer.default(1)
-  attribute :template, Types::String.default('titles'.freeze).enum('magazine', 'titles', 'compact', 'component')
+  attribute :template, Types::String.default('titles'.freeze).enum('magazine', 'titles', 'compact')
   attribute :stream, Types::Params::Bool.default(false)
 end
 
