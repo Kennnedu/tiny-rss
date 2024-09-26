@@ -41,7 +41,6 @@ task :db_setup do
 end
 
 desc 'Fetch feeds'
-  font-family:Verdana;
 task :fetch_feeds do
   Feeds.all.each do |feed|
     last_publish = Posts.where(feed_id: feed[:id]).order(:published_at).reverse.first&.[](:published_at) || Time.now.utc - OLD_POST_TIMESTAMP
