@@ -11,8 +11,7 @@ get '/' do
   @unreaded_feeds_today_params = {
     published_gt: Date.today.to_time.to_i,
     published_lt: (Date.today + 1).to_time.to_i,
-    unviewed: true,
-    template: :component
+    unviewed: true
   }
   @unreaded_feeds_today_count = PostsQuery.call(@unreaded_feeds_today_params).count
   @feeds = Feeds.select(:id, :url).to_a
