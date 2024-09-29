@@ -1,5 +1,6 @@
 require 'sinatra'
 
+require_relative './post'
 require_relative './db'
 
 set :erb, trim: '-'
@@ -35,6 +36,31 @@ get '/posts/:id' do
   @post = post.first
   post.update(viewed_at: Time.now.to_i) unless @post[:viewed_at]
   erb :'posts/show'
+end
+
+get '/posts/new' do
+  erb :'posts/new'
+end
+
+post '/posts/check' do
+  @post = Post.new.fetch(params['link'])
+  erb :'posts/new'
+end
+
+post '/posts' do
+  feed = Feeds.where(url: DEFAULT_FEED).first
+  
+  Posts.insert(
+    feed_id: feed[:id],
+    title: params['title'],
+    link: params['link'],
+    image: params['image'],
+    description: params['description'],
+    published_at: Time.now.to_i,
+    starred_at: Time.now.to_i
+  )
+
+  redirect '/'
 end
 
 get '/posts/:id/redirect' do
