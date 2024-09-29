@@ -30,6 +30,13 @@ get '/posts' do
   erb template.to_sym
 end
 
+get '/posts/:id' do
+  post = Posts.where(id: params['id'])
+  @post = post.first
+  post.update(viewed_at: Time.now.to_i) unless @post[:viewed_at]
+  erb :'posts/show'
+end
+
 get '/posts/:id/redirect' do
   post = Posts.where(id: params['id'])
   post.update(viewed_at: Time.now)
@@ -42,7 +49,7 @@ patch '/posts/:id/star' do
   starred_at = post.first[:starred_at] ? nil : Time.now
   post.update(starred_at: starred_at)
 
-  redirect '/posts'
+  redirect "/posts/#{params[:id]}"
 end
 
 patch '/posts/:id/read_later' do
@@ -50,7 +57,7 @@ patch '/posts/:id/read_later' do
   read_later_at = post.first[:read_later_at] ? nil : Time.now
   post.update(read_later_at: read_later_at)
 
-  redirect '/posts'
+  redirect "/posts/#{params[:id]}"
 end
 
 put '/posts/view' do
