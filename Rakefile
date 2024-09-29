@@ -35,6 +35,7 @@ task :db_setup do
     'https://kevquirk.com/feed/',
     'https://hackernoon.com/feed',
     'https://feeds.buzzsprout.com/1895262.rss',
+    DEFAULT_FEED
   ].each do |url|
     Feeds.where(url: url).first || Feeds.insert(url: url)
 	end

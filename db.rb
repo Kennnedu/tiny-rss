@@ -15,6 +15,7 @@ end
 
 Posts = DB[:posts].extension(:pagination)
 Feeds = DB[:feeds]
+DEFAULT_FEED = 'https://DEFAULT'
 
 module Types
   include Dry.Types()
