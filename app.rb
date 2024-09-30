@@ -31,22 +31,6 @@ get '/posts' do
   erb template.to_sym
 end
 
-get '/posts/:id' do
-  post = Posts.where(id: params['id'])
-  @post = post.first
-  post.update(viewed_at: Time.now.to_i) unless @post[:viewed_at]
-  erb :'posts/show'
-end
-
-get '/posts/new' do
-  erb :'posts/new'
-end
-
-post '/posts/check' do
-  @post = Post.new.fetch(params['link'])
-  erb :'posts/new'
-end
-
 post '/posts' do
   feed = Feeds.where(url: DEFAULT_FEED).first
   
@@ -60,6 +44,39 @@ post '/posts' do
     starred_at: Time.now.to_i
   )
 
+  redirect '/'
+end
+
+get '/posts/new' do
+  erb :'posts/new'
+end
+
+post '/posts/check' do
+  @post = Post.new.fetch(params['link'])
+  erb :'posts/new'
+end
+
+get '/posts/:id' do
+  post = Posts.where(id: params['id'])
+  @post = post.first
+  post.update(viewed_at: Time.now.to_i) unless @post[:viewed_at]
+  erb :'posts/show'
+end
+
+get '/posts/:id/edit' do
+  post = Posts.where(id: params['id'])
+  @post = post.first
+  erb :'posts/edit'
+end
+
+put '/posts/:id' do
+  post = Posts.where(id: params['id'])
+  post.update(
+    title: params['title'],
+    link: params['link'],
+    image: params['image'],
+    description: params['description'],
+  )
   redirect '/'
 end
 

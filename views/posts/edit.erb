@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel=icon href="data:,">
-    <title>New Post</title>
+    <title>Edit <%= @post[:id] %></title>
     <style>
 
         * {
@@ -59,8 +59,9 @@
     </style>
 </head>
 <body>
-    <% if @post %>
-      <form action="/posts" method="POST">
+
+      <form action="/posts/<%= @post[:id] %>" method="POST">
+          <input type="hidden" name="_method" value="PUT">
           <label for="link">Link (URL):</label>
           <input type="url" id="link" name="link" placeholder="https://example.com" required value="<%= @post[:link] %>">
 
@@ -80,13 +81,6 @@
 
           <input type="submit" value="Submit">
       </form>
-    <% else %>
-      <form action="/posts/check" method="POST">
-          <label for="link">Link (URL):</label>
-          <input type="url" id="link" name="link" placeholder="https://example.com" required>
-          <input type="submit" value="Submit">
-      </form>
-    <% end %>
 
 </body>
 </html>

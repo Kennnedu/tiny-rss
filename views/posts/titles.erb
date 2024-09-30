@@ -114,6 +114,22 @@
   </head>
   <body>
     <section class="posts" id="posts">
+      <% if @posts.first_page? %>
+        <article class="post">
+          <section class="post__content">
+            <div>
+              <div class="post__title">
+                <a href="/posts/new">
+                  + Add new post
+                </a>
+              </div>
+              <div class="post__info">
+                Unknown | Now
+              </div>
+            </div>
+          </section>
+        </article>
+      <% end %>
       <% @posts.each do |post| %>
           <article class="post">
             <section class="post__content">
@@ -124,7 +140,7 @@
                   </a>
                 </div>
                 <div class="post__info">
-                  <%= "#{URI(post[:link]).host} / #{post[:published_at].strftime('%d %b %Y %H:%M %Z')}" %>
+                  <%= "#{URI(post[:link]).host} | #{post[:published_at].strftime('%d %b %Y %H:%M %Z')}" %>
                 </div>
               </div>
             </section>
