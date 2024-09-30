@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require_relative '../db'
+require_relative '../post'
 require 'irb'
 
 IRB.start

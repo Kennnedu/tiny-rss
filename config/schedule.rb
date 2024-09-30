@@ -23,12 +23,12 @@ every 1.minute do
   rake "fetch_feeds"
 end
 
-#every 10.minutes do
-#  rake "clear_feeds"
-#end
+every :day do
+  rake "clear_feeds"
+end
 
 every :day do
-  command 'cp -rf /app/db/*.sqlite3 /app/tmp/'
+  command 'cp -rf /app/*.sqlite3 /app/tmp/'
 end
 
 # Learn more: http://github.com/javan/whenever

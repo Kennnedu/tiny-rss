@@ -35,6 +35,7 @@ task :db_setup do
     'https://kevquirk.com/feed/',
     'https://hackernoon.com/feed',
     'https://feeds.buzzsprout.com/1895262.rss',
+    DEFAULT_FEED
   ].each do |url|
     Feeds.where(url: url).first || Feeds.insert(url: url)
 	end
@@ -64,7 +65,6 @@ end
 
 desc 'Clear old viewed feed\'s posts'
 task :clear_feeds do
-  # TODO: fix issue
   Posts.where(Sequel.lit('published_at < ?', Time.now.utc - OLD_POST_TIMESTAMP))
-       .where(Sequel.|({ starred_at: nil }, { read_later_at: nil })).delete
+       .where({ starred_at: nil, read_later_at: nil }).delete
 end
