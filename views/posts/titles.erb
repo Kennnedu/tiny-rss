@@ -1,7 +1,17 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tiny RSS</title>
+    <title>
+      <% if params['read_later'] %>
+        Read Later
+      <% elsif params['starred'] %>
+        Starred
+      <% elsif params['published_lt'] and params['published_gt'] %>
+        Today
+      <% else %>
+        Tiny RSS
+      <% end %>
+    </title>
     <link rel=icon href="data:,">
 
     <style>
@@ -159,7 +169,7 @@
                 <input type="hidden" name="<%= key %>" value="<%= value %>" />
               <% end %>
             <% end %>
-            <input type="hidden" name="post[viewed_at]" value="<%= @posts_params[:published_lt] %>" />
+            <input type="hidden" name="viewed_at" value="<%= @posts_params[:published_lt] %>" />
             <button type="submit" class="button">Mark All As Viewed</button>
           </form>
         <% end %>

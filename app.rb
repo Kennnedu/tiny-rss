@@ -69,17 +69,6 @@ get '/posts/:id/edit' do
   erb :'posts/edit'
 end
 
-put '/posts/:id' do
-  post = Posts.where(id: params['id'])
-  post.update(
-    title: params['title'],
-    link: params['link'],
-    image: params['image'],
-    description: params['description'],
-  )
-  redirect '/'
-end
-
 get '/posts/:id/redirect' do
   post = Posts.where(id: params['id'])
   post.update(viewed_at: Time.now)
@@ -106,6 +95,18 @@ end
 put '/posts/view' do
   posts_params = PostsParams.call(params).to_h
   @posts = PostsQuery.call(posts_params)
-  @posts.update(viewed_at: Time.at(params[:post][:viewed_at].to_i))
+  @posts.update(viewed_at: Time.at(params[:viewed_at].to_i))
   redirect '/'
 end
+
+put '/posts/:id' do
+  post = Posts.where(id: params['id'])
+  post.update(
+    title: params['title'],
+    link: params['link'],
+    image: params['image'],
+    description: params['description'],
+  )
+  redirect "/posts/#{params['id']}"
+end
+
