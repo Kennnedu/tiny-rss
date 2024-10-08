@@ -33,6 +33,17 @@ describe 'Post' do
       assert has_button? '📑 Read Later'
       assert has_button? '📋 Copy to Clipboard'
     end
+
+    describe 'remove star' do
+      before do
+        visit "/posts/#{post[:id]}"
+        click_button '⭐ Remove Star'
+      end
+
+      it 'displays star button' do
+        assert has_button? '⭐ Star'
+      end
+    end
   end
 
   describe 'read_later post' do
@@ -61,6 +72,17 @@ describe 'Post' do
       assert has_button? '📑 Remove Read Later'
       assert has_button? '📋 Copy to Clipboard'
     end
+
+    describe 'remove read later' do
+      before do
+        visit "/posts/#{post[:id]}"
+        click_button '📑 Remove Read Later'
+      end
+
+      it 'displays read later button' do
+        assert has_button? '📑 Read Later'
+      end
+    end
   end
 
   describe 'viewed post' do
@@ -88,6 +110,39 @@ describe 'Post' do
       assert has_button? '⭐ Star'
       assert has_button? '📑 Read Later'
       assert has_button? '📋 Copy to Clipboard'
+    end
+
+    describe 'read later' do
+      before  do
+        visit "/posts/#{post[:id]}"
+        click_button '📑 Read Later'
+      end
+
+      it 'displays remove read later' do
+        assert has_button? '📑 Remove Read Later'
+      end
+    end
+
+    describe 'star' do
+      before  do
+        visit "/posts/#{post[:id]}"
+        click_button '⭐ Star'
+      end
+
+      it 'displays remove read later' do
+        assert has_button? '⭐ Remove Star'
+      end
+    end
+
+    describe 'copy to clipboard' do
+      before do
+        visit "/posts/#{post[:id]}"
+        click_button '📋 Copy to Clipboard'
+      end
+
+      it 'coppied to clipboard' do
+        skip 'have to add compatible driver with executing js'
+      end
     end
   end
 end
