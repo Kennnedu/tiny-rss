@@ -52,7 +52,8 @@ get '/posts/new' do
 end
 
 post '/posts/check' do
-  @post = Post.new.fetch(params['link'])
+  result = Post.new.fetch(params['link'])
+  result.is_a?(Post) ? @post = result : @error = result
   erb :'posts/new'
 end
 

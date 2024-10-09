@@ -17,5 +17,7 @@ Post = Struct.new(:title, :link, :description, :image) do
     self.image = head&.at('meta[property="og:image"]')&.[]('content')
     self.description = head&.at('meta[name="description"]')&.[]('content') || head&.at('meta[property="og:description"]')&.[]('content')
     self
+  rescue => e
+    return e
   end
 end
