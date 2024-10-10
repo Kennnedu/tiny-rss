@@ -13,7 +13,7 @@
         body {
             font-family:Arial,Verdana,sans-serif;
             margin: 50px;
-            background-color: #f5f5f5;
+            background-color:#eff0f3;
         }
         form {
             padding: 20px;
@@ -56,13 +56,16 @@
             max-width: 100%;
             margin-top: 10px;
         }
+        .error-message {
+          color: #d9376e;
+        }
     </style>
 </head>
 <body>
     <% if @post %>
       <form action="/posts" method="POST">
           <label for="link">Link (URL):</label>
-          <input type="url" id="link" name="link" placeholder="https://example.com" required value="<%= @post[:link] %>">
+          <input type="url" id="link" name="link" placeholder="https://example.com" readonly required value="<%= @post[:link] %>">
 
             <fieldset>
                 <legend>Link Details</legend>
@@ -83,11 +86,16 @@
     <% else %>
       <form action="/posts/check" method="POST">
           <label for="link">Link (URL):</label>
-          <input type="url" id="link" name="link" placeholder="https://example.com" required>
+          <input type="url" id="link" name="link" placeholder="https://example.com" required value="<%= params['link'] %>">
           <input type="submit" value="Submit">
+          <% if @error %>
+            <p class="error-message">
+              <strong>Unprocessable link</strong> <br>
+              <%= @error.message %>
+            </p>
+          <% end %>
       </form>
     <% end %>
-
 </body>
 </html>
 

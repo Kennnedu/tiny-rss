@@ -40,8 +40,8 @@ post '/posts' do
     link: params['link'],
     image: params['image'],
     description: params['description'],
-    published_at: Time.now.to_i,
-    starred_at: Time.now.to_i
+    published_at: Time.now,
+    starred_at: Time.now
   )
 
   redirect '/'
@@ -52,14 +52,15 @@ get '/posts/new' do
 end
 
 post '/posts/check' do
-  @post = Post.new.fetch(params['link'])
+  result = Post.new.fetch(params['link'])
+  result.is_a?(Post) ? @post = result : @error = result
   erb :'posts/new'
 end
 
 get '/posts/:id' do
   post = Posts.where(id: params['id'])
   @post = post.first
-  post.update(viewed_at: Time.now.to_i) unless @post[:viewed_at]
+  post.update(viewed_at: Time.now) unless @post[:viewed_at]
   erb :'posts/show'
 end
 
@@ -103,7 +104,6 @@ put '/posts/:id' do
   post = Posts.where(id: params['id'])
   post.update(
     title: params['title'],
-    link: params['link'],
     image: params['image'],
     description: params['description'],
   )

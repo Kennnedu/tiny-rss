@@ -68,3 +68,13 @@ task :clear_feeds do
   Posts.where(Sequel.lit('published_at < ?', Time.now.utc - OLD_POST_TIMESTAMP))
        .where({ starred_at: nil, read_later_at: nil }).delete
 end
+
+require 'minitest/test_task'
+Minitest::TestTask.create(:test) do |t|
+  t.libs << 'spec'
+  t.warning = false
+  t.test_globs = ['spec/integration/*_spec.rb']
+end
+
+desc 'Integration tests'
+task :default => :test

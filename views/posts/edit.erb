@@ -13,7 +13,7 @@
         body {
             font-family:Arial,Verdana,sans-serif;
             margin: 50px;
-            background-color: #f5f5f5;
+            background-color:#eff0f3;
         }
         form {
             padding: 20px;
@@ -63,7 +63,7 @@
       <form action="/posts/<%= @post[:id] %>" method="POST">
           <input type="hidden" name="_method" value="PUT">
           <label for="link">Link (URL):</label>
-          <input type="url" id="link" name="link" placeholder="https://example.com" required value="<%= @post[:link] %>">
+          <input type="url" id="link" name="link" placeholder="https://example.com" disabled value="<%= @post[:link] %>">
 
             <fieldset>
                 <legend>Link Details</legend>
