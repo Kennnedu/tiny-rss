@@ -104,7 +104,6 @@ put '/posts/:id' do
   post = Posts.where(id: params['id'])
   post.update(
     title: params['title'],
-    link: params['link'],
     image: params['image'],
     description: params['description'],
   )
