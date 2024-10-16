@@ -5,10 +5,10 @@ require 'capybara/minitest'
 require 'rack/test'
 require 'capybara/dsl'
 
-require_relative '../app'  # Load your Rackup file
+require_relative '../tiny_rss'  # Load your Rackup file
 
 # Configure Capybara to use your Rack app
-Capybara.app = Sinatra::Application.new
+Capybara.app = TinyRss.freeze.app
 
 # Include Capybara DSL in Minitest
 class Minitest::Spec
