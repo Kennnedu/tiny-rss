@@ -1,6 +1,16 @@
-<% @posts.each do |post| -%>
-  <%= erb(:'/posts/component/_post', layout: false, locals: { post: post }) %>
-<% end -%>
+<% if @posts_params.template == 'magazine' %>
+  <% @posts.each do |post| -%>
+    <%= erb(:'/posts/post_magazine', layout: false, locals: { post: post }) %>
+  <% end -%>
+<% elsif @posts_params.template == 'compact' %>
+  <% @posts.each do |post| -%>
+    <%= erb(:'/posts/post_compact', layout: false, locals: { post: post }) %>
+  <% end -%>
+<% else @posts_params.template == 'titles' %>
+  <% @posts.each do |post| -%>
+    <%= erb(:'/posts/post_title', layout: false, locals: { post: post }) %>
+  <% end -%>
+<% end %>
 <div class="page-end">
   <% if @posts.next_page -%>
     <a href="/posts?<%= URI.encode_www_form(@posts_params.to_h.compact.merge(page: @posts.next_page, stream: true)) -%>" hidden="" data-next-page>Next</a>

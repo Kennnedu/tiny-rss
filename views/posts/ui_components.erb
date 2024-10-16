@@ -1,15 +1,16 @@
 <template id="flash-message">
   <style>
     div {
+      font-weight: 600;
       text-align: center;
-      background-color: var(--orange);
-      color: var(--blank-strong);
+      background-color: var(--secondary);
       position: fixed;
       width: 100%;
       padding: 4px;
       margin-top: 60px;
       z-index: 1;
-      color: var(--white);
+      color: var(--stroke);
+      border-bottom: 3px solid var(--stroke1);
     }
   </style>
   <div id="message"></div>
@@ -17,4 +18,4 @@
 <template id="clipboard">
   <slot></slot>
 </template>
-<script src="posts/component/index.js" async></script>
+<script src="posts/index.js" async></script>
