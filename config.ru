@@ -1,3 +1,3 @@
-require_relative 'app'
+require_relative 'tiny_rss'
 
-run Sinatra::Application
+run TinyRss.freeze.app
